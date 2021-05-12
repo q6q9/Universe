@@ -1,25 +1,36 @@
 #include <iostream>
+#include <windows.h>
+
 using namespace std;
 
-class main
+void print(string text) { cout << text << endl; }
+void cls() { printf("\e[1;1H\e[2J"); }
+
+class Film
 {
 private:
-    /* data */
+    string name, genre;
+
 public:
-    main(int a);
-    ~main();
+    Film(string name, string genre);
+    ~Film();
 };
 
-main::main(/* args */)
+Film::Film(string name, string genre) : name(name), genre(genre)
+{
+    print("Create new film!");
+    cout<<"Name - "<<name<<", Genre - "<< genre<<endl;
+}
+
+Film::~Film()
 {
 }
 
-main::~main()
+int main()
 {
-}
-
-
-int main(){
-    cout<<"HI"<<endl;
+   
+    cls();
+    Film a("Spider-man", "Fantastic"), b("men", "Ice");
+    getchar();
     return 0;
 }
