@@ -5,8 +5,18 @@
 
 using namespace std;
 class Film;
-void print(string text) { cout << text << endl; }
-void cls() { printf("\e[1;1H\e[2J"); }
+void print(string text) { cout << text << endl; }//РІС‹РІРѕРґ С‚РµРєСЃС‚Р°
+void cls() { printf("\e[1;1H\e[2J"); }//РѕС‡РёСЃС‚РєР° РєРѕРЅСЃРѕР»Рё
+
+void menu(string text, ...)
+{   
+    string * texts =  text;
+    for (size_t i = 0; i < texts.size(); i++)
+    {
+        /* code */
+    }
+    
+}
 
 class Repertoire
 {
@@ -70,7 +80,7 @@ public:
 Film::Film(string name, string genre) : name(name), genre(genre)
 {
     print("Create new film!");
-    cout << "Name - " << name << ", Жанр - " << genre << endl;
+    cout << "Name - " << name << ", пїЅпїЅпїЅпїЅ - " << genre << endl;
 }
 
 Film::~Film()
@@ -79,10 +89,10 @@ Film::~Film()
 
 int main()
 {
-    system("chcp 1251"); // Кодировка для отображения кириллицы
+    system("chcp 1251"); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     cls();
 
-    Film a("Человек паук", "Fantastic"), b("men", "Ice");
+    Film a("пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ", "Fantastic"), b("men", "Ice");
     getchar();
     return 0;
 }
