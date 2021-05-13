@@ -1,9 +1,10 @@
 #include <iostream>
+#include <vector>
 //#include <windows.h>
 //#include <clocale>
 
 using namespace std;
-
+class Film;
 void print(string text) { cout << text << endl; }
 void cls() { printf("\e[1;1H\e[2J"); }
 
@@ -35,9 +36,11 @@ class Cinema
 private:
     int id, places, halls;
     string name, address, category;
-    bool  state;
+    bool state;
+
 public:
-    Cinema(/* args */);
+    Cinema(int id, int places, int halls, string name,
+           string address, string category, bool state);
     ~Cinema();
 };
 
@@ -52,11 +55,12 @@ Cinema::~Cinema()
 {
 }
 
-
 class Film
 {
 private:
-    string name, genre;
+    int id;
+    string name, producer, oper, genre, studio;
+    vector<string> actors;
 
 public:
     Film(string name, string genre);
@@ -66,7 +70,7 @@ public:
 Film::Film(string name, string genre) : name(name), genre(genre)
 {
     print("Create new film!");
-    cout<<"Name - "<<name<<", Р вЂ“Р В°Р Р…РЎР‚ - "<< genre<<endl;
+    cout << "Name - " << name << ", ���� - " << genre << endl;
 }
 
 Film::~Film()
@@ -75,12 +79,10 @@ Film::~Film()
 
 int main()
 {
-    // SetConsoleCP(1251);// РЎС“РЎРѓРЎвЂљР В°Р Р…Р С•Р Р†Р С”Р В° Р С”Р С•Р Т‘Р С•Р Р†Р С•Р в„– РЎРѓРЎвЂљРЎР‚Р В°Р Р…Р С‘РЎвЂ РЎвЂ№ win-cp 1251 Р Р† Р С—Р С•РЎвЂљР С•Р С” Р Р†Р Р†Р С•Р Т‘Р В°
-    system("chcp 1251");
-    // SetConsoleOutputCP(1251); // РЎС“РЎРѓРЎвЂљР В°Р Р…Р С•Р Р†Р С”Р В° Р С”Р С•Р Т‘Р С•Р Р†Р С•Р в„– РЎРѓРЎвЂљРЎР‚Р В°Р Р…Р С‘РЎвЂ РЎвЂ№ win-cp 1251 Р Р† Р С—Р С•РЎвЂљР С•Р С” Р Р†РЎвЂ№Р Р†Р С•Р Т‘Р В°
-    // setlocale(LC_CTYPE, "rus");
+    system("chcp 1251"); // ��������� ��� ����������� ���������
     cls();
-    Film a("Р В§Р ВµР В»Р С•Р Р†Р ВµР С” Р С—Р В°РЎС“Р С”", "Fantastic"), b("men", "Ice");
+
+    Film a("������� ����", "Fantastic"), b("men", "Ice");
     getchar();
     return 0;
 }
