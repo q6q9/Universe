@@ -1,5 +1,6 @@
 #include <iostream>
-#include <windows.h>
+//#include <windows.h>
+//#include <clocale>
 
 using namespace std;
 
@@ -19,7 +20,7 @@ public:
 Film::Film(string name, string genre) : name(name), genre(genre)
 {
     print("Create new film!");
-    cout<<"Name - "<<name<<", Genre - "<< genre<<endl;
+    cout<<"Name - "<<name<<", Жанр - "<< genre<<endl;
 }
 
 Film::~Film()
@@ -28,9 +29,12 @@ Film::~Film()
 
 int main()
 {
-   
+    // SetConsoleCP(1251);// установка кодовой страницы win-cp 1251 в поток ввода
+    system("chcp 1251");
+    // SetConsoleOutputCP(1251); // установка кодовой страницы win-cp 1251 в поток вывода
+    // setlocale(LC_CTYPE, "rus");
     cls();
-    Film a("Spider-man", "Fantastic"), b("men", "Ice");
+    Film a("Человек паук", "Fantastic"), b("men", "Ice");
     getchar();
     return 0;
 }

@@ -8,8 +8,8 @@
             "type": "shell",
             "command": "g++",
             "args": [
-                "\"C:\\Users\\User\\Desktop\\Новая папка (3)\\фв\\УНИВЕР\\ООП\\Course Project\\main.cpp\"",
-                // "main.cpp",
+                // "C:/Users/User/Desktop/Новая_папка_3/фв/УНИВЕР/ООП/Course_Project/main.cpp",
+                "'C:/Users/User/Desktop/Новая папка 3/фв/УНИВЕР/ООП/Course Project/main.cpp'",
                 "-o",
                 "main.exe"
             ],
@@ -18,20 +18,27 @@
                 "isDefault": true
             }
         },
-        // {
-        //     "label": "echo1",
-        //     "type": "shell",
-        //     "command": "g++",
-        //     "args": [
-        //         "main.cpp",
-        //         // "main.cpp",
-        //         "-o",
-        //         "main.exe"
-        //     ],
-        //     "group": {
-        //         "kind": "build",
-        //         "isDefault": true
-        // }
+        {
+            "type": "cppbuild",
+            "label": "C/C++: cl.exe сборка активного файла",
+            "command": "cl.exe",
+            "args": [
+                "/Zi",
+                "/EHsc",
+                "/nologo",
+                "/Fe:",
+                "${fileDirname}\\${fileBasenameNoExtension}.exe",
+                "${file}"
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ],
+            "group": "build",
+            "detail": "компилятор: cl.exe"
+        }
     ]
 
 }
