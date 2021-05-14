@@ -6,21 +6,16 @@
 
 using namespace std;
 class Film;
-void print(string text) { cout << text << endl; } //����� ������
-void cls() { printf("\e[1;1H\e[2J"); }            //������� �������
-void menu(int i, ...)                             //����������� ����
+void print(string text) { cout << text << endl; } //âûâîä òåêñòà
+void cls() { printf("\e[1;1H\e[2J"); }            //î÷èñòêà êîíñîëè
+void menu(int i, ...) //êîíòåêñòíîå ìåíþ
 {
     va_list t;
     va_start(t, i);
-    print("�������� ��������:");
     for (size_t j = 0; j <= i; j++)
-        printf("[%d] - %s\n", j, (j ? va_arg(t, char *) : "��������� (�����)"));
+        printf("[%d] - %s\n", j, (j ? va_arg(t, char *) : "Âåðíóòüñÿ"));
 }
-void cc()
-{
-    cin.clear();
-    cin.ignore(32767, '\n');
-}
+
 class Repertoire
 {
 private:
@@ -91,7 +86,7 @@ public:
 Film::Film(string name, string genre) : name(name), genre(genre)
 {
     print("Create new film!");
-    cout << "Name - " << name << ", ���� - " << genre << endl;
+    cout << "Name - " << name << ", Æàíð - " << genre << endl;
 }
 
 Film::~Film()
@@ -100,65 +95,46 @@ Film::~Film()
 
 int main()
 {
-    system("chcp 1251"); // ��������� ��� ����������� ���������
+    system("chcp 1251"); // Êîäèðîâêà äëÿ îòîáðàæåíèÿ êèðèëëèöû
     cls();
 
     int x;
     bool flag = true;
-    print("��������� ��������, ����� ��������� ��������, �������� ������, � ������� �� ������ ��������");
     while (flag)
     {
-        menu(3, "����������", "������", "����������");
+        menu(3, "Êèíîòåàòðû", "Ôèëüìû", "Ðåïåðòóàðû");
 
-        // print("�������� ������� ��� ������:\n[1] - ����������\n[2] - ������"
-        //       "\n[3] - ����������\n[0] - �����");
-        
+        // print("Âûáåðèòå îáëàñòü äëÿ ðàáîòû:\n[1] - Êèíîòåàòðû\n[2] - Ôèëüìû"
+        //       "\n[3] - Ðåïåðòóàðû\n[0] - âûõîä");
         cin >> x;
-        if (cin.fail())
-        {
-            cc();
-            continue;
-        }
         switch (x)
         {
         case 1:
+            print("Íàæàòà 1");
             flag = false;
-
-
-            print("������ 1");
-            
-            
             break;
 
         case 2:
+            print("Íàæàòà 2");
             flag = false;
-
-
-            print("������ 2");
-            
-            
             break;
 
         case 3:
+            print("Íàæàòà 3");
             flag = false;
-
-
-            print("������ 3");
-            
-            
             break;
 
         case 0:
             return 0;
         default:
-            print("�������� �������� (������� ����� �� 1 �� 3)");
+            print("Íåâåðíîå çíà÷åíèå (ââåäèòå öèôðó îò 1 äî 3)");
             break;
         }
         cin.clear();
         cin.ignore(32767, '\n');
     }
 
-    Film a("������� ����", "Fantastic"), b("men", "Ice");
+    Film a("×åëîâåê ïàóê", "Fantastic"), b("men", "Ice");
     getchar();
     return 0;
 }

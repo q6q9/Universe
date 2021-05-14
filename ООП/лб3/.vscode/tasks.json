@@ -10,8 +10,7 @@
             "args": [
                 "${file}",
                 "-o",
-
-                "${fileDirname}\\${fileBasenameNoExtension}.exe"
+                "${fileBasenameNoExtension}.exe"
             ],
             "group": {
                 "kind": "build",
