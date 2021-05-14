@@ -1,5 +1,10 @@
 #include <iostream>
 #include <stdarg.h>
+#include <vector>
+#include <fstream>
+#include <numeric>
+#include <string>
+
 using namespace std;
 
 
@@ -12,13 +17,27 @@ print("Выберите действие:");
 for (size_t j = 0; j <= i; j++)
 printf("[%d] - %s\n", j, (j ? va_arg(t, char *) : "Вернуться (выход)"));
 }
-
+void aa(vector<int>&b){
+   
+    
+}
 
 int main()
 {
         system("chcp 1251");
-menu(4,"Отобразить текущие кинотеатры", "Отобразить сведения кинотеатра по ключу",
-"Поиск кинотеатров", "Редактирование кинотеатров");
-cout<<5;
+vector<string> a;
+string b;
+for(;;){
+getline(cin, b);
+if(b=="-1") break;
+if(b!="")
+a.push_back(b);
+}
+for (string const &x:a)
+{
+    cout<<x<<endl;
+}
+
+
 getchar();
 }
