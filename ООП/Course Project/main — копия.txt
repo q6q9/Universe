@@ -5,11 +5,26 @@
 #include <string>
 #include <numeric>
 #include <regex>
+#include <unordered_map>
+#include <map>
+#include <variant>
+
 
 using namespace std;
+
+
 class Cinema;
 class Film;
 class Repertoire;
+void get_films(vector<Film> &films);
+void get_all(vector<Cinema> &cinemas, vector<Film> &films, vector<Repertoire> &repertoires);
+string unvector(const vector<string> &a)
+{
+    string s;
+    for (string const &b : a)
+        s += b + ((b != a[a.size() - 1]) ? ", " : "");
+    return s;
+}
 void print(string text) { cout << text << endl; } //вывод текста
 void cls() { printf("\e[1;1H\e[2J"); }            //очистка консоли
 void menu(int i, ...)                             //контекстное меню
@@ -18,21 +33,21 @@ void menu(int i, ...)                             //контекстное ме�
     va_start(t, i);
     print("Выберите действие:");
     for (size_t j = 0; j <= i; j++)
-        printf("[%d] - %s\n", j, (j ? va_arg(t, char*) : "Вернуться (выход)"));
+        printf("[%d] - %s\n", j, (j ? va_arg(t, char *) : "Вернуться (выход)"));
 }
 void cc() //очистка потока ввода
 {
     cin.clear();
     cin.ignore(32767, '\n');
 }
-void cinx(int& x, string text, int i, ...) //ввод x
+void cinx(int &x, string text, int i, ...) //ввод x
 {
 
     print(text);
     va_list t;
     va_start(t, i);
     for (size_t j = 0; j <= i; j++)
-        printf("[%d] - %s\n", j, (j ? va_arg(t, char*) : "Вернуться (выход)"));
+        printf("[%d] - %s\n", j, (j ? va_arg(t, char *) : "Вернуться (выход)"));
     cin >> x;
     while (cin.fail() || (x < 0 || x > i))
     {
@@ -43,7 +58,25 @@ void cinx(int& x, string text, int i, ...) //ввод x
     cc();
     cls();
 }
-void push_line(string& str)
+void cinx(string &x, string text, int i, ...) //ввод x
+{
+
+    print(text);
+    va_list t;
+    va_start(t, i);
+    for (size_t j = 0; j <= i; j++)
+        printf("[%d] - %s\n", j, (j ? va_arg(t, char *) : "Вернуться (выход)"));
+    cin >> x;
+    while ( (int)x[0] < 0 || (int)x[0] > i ||x[1]!=' ')
+    {
+        
+        cout << "Неверное значение (введите цифру от 1 до " << i << " и команду)" << endl;
+        cin >> x;
+    }
+    cc();
+    cls();
+}
+void push_line(string &str) //ввод не пустых строк
 {
     for (;;)
     {
@@ -61,25 +94,25 @@ void push_line(string& str)
             return;
     }
 }
-string str(vector<string>& b)
+string str(vector<string> &b) //"<%s>",b[]
 {
     string a = "<";
-    for (string& x : b)
+    for (string &x : b)
         a += "'" + x + "'";
 
     return a + ">";
 }
-string str(string& b)
+string str(string &b) //"<%s>",b
 {
     return "<" + b + ">";
 }
-void push_vector(vector<string>& a)
+void push_vector(vector<string> &a)
 {
     string b;
     string x;
     for (;;)
     {
-        cout << "_" << b << "_" << endl;
+        // cout << "_" << b << "_" << endl;
         getline(cin, b);
         x = "";
         for (size_t i = 0; i < b.size(); i++)
@@ -88,19 +121,18 @@ void push_vector(vector<string>& a)
                 x += b[i];
         }
         b = x;
-        cout << "_" << b << "_" << endl;
+        // cout << "_" << b << "_" << endl;
         if (b == "")
         {
             print("Err: empty line");
             continue;
         }
-        if (b == "-1")
+        if (b == "-1" && a.size() > 0)
             break;
         a.push_back(b);
-        break;
     }
 }
-vector<string> parsing(string& str, regex& reg)
+vector<string> parsing(string &str, regex &reg)
 {
     string s;
     vector<string> a;
@@ -115,13 +147,24 @@ vector<string> parsing(string& str, regex& reg)
             if (i < match.str().size() - 2)
                 s += match.str()[i + 1];
         }
-        cout << -1 << "\t\t" << s << endl;
         a.push_back(s);
         currentMatch++;
     }
-    cout << -234;
     return a;
 }
+void r_cin(int &j)
+{
+    for (;;)
+    {
+        cin >> j;
+        if (cin.fail())
+            cc();
+        else
+            break;
+        print("Неверный ввод, попробуйте ввести число:");
+    }
+}
+
 class Repertoire
 {
 private:
@@ -132,15 +175,15 @@ private:
 public:
     int id, price, free_places;
     string date;
-    Film* film;
+    Film *film;
     Repertoire(int id, int price, int free_places,
-        string date, Film* film);
+               string date, Film *film);
     ~Repertoire();
 };
 
 Repertoire::Repertoire(int id, int price, int free_places,
-    string date, Film* film) : id(id), price(price),
-    free_places(free_places), date(date), film(film)
+                       string date, Film *film) : id(id), price(price),
+                                                  free_places(free_places), date(date), film(film)
 {
 }
 
@@ -160,13 +203,13 @@ public:
     string name, address, category;
     bool state;
     Cinema(int id, int places, int halls, string name,
-        string address, string category, bool state);
+           string address, string category, bool state);
     ~Cinema();
 };
 
 Cinema::Cinema(int id, int places, int halls, string name,
-    string address, string category, bool state) : id(id), places(places), halls(halls), name(name),
-    address(address), category(category), state(state)
+               string address, string category, bool state) : id(id), places(places), halls(halls), name(name),
+                                                              address(address), category(category), state(state)
 {
 }
 
@@ -191,16 +234,42 @@ public:
     vector<string> opers;
     vector<string> genres;
     vector<string> actors;
+    //Film *
     Film(string str);
-    Film() { print("Создан пустой фильм"); }
-    Film(Film const& a);
+    Film();
+    Film(int a);
+    Film(Film const &a);
     Film(int id, string name, string studio,
-        vector<string> producers, vector<string> opers,
-        vector<string> genres, vector<string> actors);
+         vector<string> producers, vector<string> opers,
+         vector<string> genres, vector<string> actors);
     ~Film();
 
+    //123467
+    //10
+    void set_id()
+    {
+        id = 1;
+        bool z = false;
+        vector<Film> films;
+        get_films(films);
+        vector<int> ids(films.size());
+        for (;;)
+        {
+            z = false;
+            for (Film const &a : films)
+                if (id == a.id)
+                {
+                    z = true;
+                    id++;
+                    continue;
+                }
+            if (!z)
+                return;
+        }
+    }
     void input()
     {
+        set_id();
         print("Введите название:");
         push_line(name);
         print("Введите название киностудии");
@@ -216,6 +285,15 @@ public:
         print("Успех");
     }
 
+    void show()
+    {
+        cout << "ID : " << id << ". Название : " << name << ". Жанр(ы) : " << unvector(genres)
+             << ". Студия : " << studio << ".\nПродюссер(ы) : " << unvector(producers)
+             << ". Оператор(ы) : " << unvector(opers)
+             << ".\nАктер(ы) : " << unvector(actors) << endl
+             << endl;
+    }
+
     void save()
     {
         ofstream out("data/films.db", ios::app);
@@ -225,96 +303,60 @@ public:
                 << str(opers) << str(genres) << str(actors) << endl;
         }
         out.close();
+        print("Фильм сохранен");
     }
 
     void upload();
 };
 
-Film::Film(Film const& a) : id(a.id), name(a.name), studio(a.studio), producers(a.producers),
-opers(a.opers), genres(a.genres), actors(a.actors)
+Film::Film(Film const &a) : id(a.id), name(a.name), studio(a.studio), producers(a.producers),
+                            opers(a.opers), genres(a.genres), actors(a.actors)
 {
-    print("Использован КОНСТУРКТОР ПОКПИРОВАНИЯ");
+    // print("Использован КОНСТУРКТОР ПОКПИРОВАНИЯ");
 }
 Film::Film(string str)
 {
     regex reg("\\d+");
     sregex_iterator abc(str.begin(),
-        str.end(), reg);
-    // id = stoi(smatch(*abc).str());
-    cout << "\t" << id << endl;
+                        str.end(), reg);
     vector<string> a;
     reg = ("(<.*?>)");
     a = parsing(str, reg);
     reg = ("'.*?'");
-    parsing(a[2], reg);
-    cout << -122345567468;
-    // *this = Film(stoi(smatch(*abc).str()), a[0], a[1], parsing(a[2],reg), parsing(a[3],reg),
-    //              parsing(a[4],reg), parsing(a[5],reg));
 
-    // name = a[0];
-    // studio = a[1];
-    // producers
-    // reg = ("(<.*?>)");
-    // sregex_iterator currentMatch(str.begin(),
-    //                              str.end(), reg);
-    // sregex_iterator lastMatch;
-    // int i = 0;
-    // string s;
-    // while (currentMatch != lastMatch)
-    // {
-    //     s = "";
-    //     smatch match = *currentMatch;
-    //     for (size_t i = 0; i < match.str().size(); i++)
-    //     {
-    //         if (i < match.str().size() - 2)
-    //             s += match.str()[i + 1];
-    //     }
-    //     cout << "\t" << s << endl;
-    //     switch (i)
-    //     {
-    //     case 0:
-    //         name = s;
-    //         break;
-    //     case 1:
-    //         studio = s;
-    //         break;
-    //     case 2:
-
-    //     default:
-    //         break;
-    //     }
-    //     id = stoi(smatch(*currentMatch).str());
-    //     currentMatch++;
-    //     i++;
-    // }
+    *this = Film(stoi(smatch(*abc).str()), a[0], a[1], parsing(a[2], reg), parsing(a[3], reg),
+                 parsing(a[4], reg), parsing(a[5], reg));
 }
-
+Film::Film() { input(); }
+Film::Film(int a){}
 Film::Film(int id, string name, string studio,
-    vector<string> producers, vector<string> opers,
-    vector<string> genres, vector<string> actors) : id(id), name(name), studio(studio), producers(producers),
-    opers(opers), genres(genres), actors(actors)
+           vector<string> producers, vector<string> opers,
+           vector<string> genres, vector<string> actors) : id(id), name(name), studio(studio), producers(producers),
+                                                           opers(opers), genres(genres), actors(actors)
 {
-    print("Конуструктор создания фильма был сипользован!\n");
+    //  print("Конуструктор создания фильма был сипользован!\n");
 }
 
 Film::~Film()
 {
 }
-
-void get_all(vector<Cinema>& cinemas, vector<Film>& films, vector<Repertoire>& repertoires)
+void get_films(vector<Film> &films)
 {
+    films.clear();
     string line;
     ifstream in("data/films.db"); // окрываем файл для чтения
     if (in.is_open())
     {
         while (getline(in, line))
         {
-            cout << line << endl;
-            cout << "\t\t\t321 перед копир\n";
+            //cout << line << endl;
             films.push_back(Film(line));
-            cout << "\t\t\t321 после копир\n";
         }
     }
+}
+void get_all(vector<Cinema> &cinemas, vector<Film> &films, vector<Repertoire> &repertoires)
+{
+    get_films(films);
     print("Соединение проозшоло успешно");
 }
 
@@ -323,77 +365,304 @@ int main()
     system("chcp 1251");
     cls();
 
-    // Film ax(0,"Человек паук", "Марвел",{"стэн ли","кирстен данст","марк уэбб"},
-    //             {"дон бёрджесс"},{"фантастика","супергерои","экшн","драма"},{"Тоби Магуайр","Уиллем Дефо",
-    //             "Кирстен Данст","Джеймс Франко"});
+    int x, y;
 
-    int x;
-    bool flag = true;
     vector<Film> films;
     vector<Cinema> cinemas;
     vector<Repertoire> repertoires;
     get_all(cinemas, films, repertoires);
-
-    cinx(x, "Выберите область, с которой вы будете работать:", 3, "Кинотеатры", "Фильмы", "Репертуары");
-
-    switch (x)
+    for (;;)
     {
-    case 1:
-        print("Нажата 1");
 
-        cinx(x, "Выберите действие:", 4, "Отобразить текущие кинотеатры", "Отобразить сведения кинотеатра по ключу",
-            "Поиск кинотеатров", "Редактирование кинотеатров");
-        switch (x)
+        cinx(y, "Выберите область, с которой вы будете работать:", 3, "Кинотеатры", "Фильмы", "Репертуары");
+
+        switch (y)
         {
         case 1:
-            print("Список текущих кинотетров:");
-            for (Cinema const& a : cinemas)
+        {
+            for (;;)
             {
-                cout << "ID : " << a.id << "| Название : " << a.name << endl;
+
+                print("Нажата 1");
+                cinx(x, "Выберите действие:", 4, "Отобразить текущие кинотеатры", "Отобразить сведения кинотеатра по ключу",
+                     "Поиск кинотеатров", "Редактирование кинотеатров");
+                switch (x)
+                {
+                case 1:
+                {
+                    print("Список текущих кинотетров:");
+                    for (Cinema const &a : cinemas)
+                        cout << "ID : " << a.id << "| Название : " << a.name << endl;
+                    print("Введите для продолжения");
+                    getchar();
+                    break;
+                }
+                case 2:
+                {
+                    print("Введите ключ нужного вам кинотеатра или -1 для выхода");
+
+                    break;
+                    //case 4:
+                    // print("Нажата 4");
+                    // cinx(x, "Выберите действие:", 3, "Добавить фильм", "Удалить фильм", "Изменить фильм");
+                }
+                case 3:
+                { //int id, int places, int halls, string name,
+                    //string address, string category, bool state
+                    cinx(x, "Установите нужные вам значения некоторым свойствам:", 7, "ID",
+                         "Название кинотеатра", "Кол-во залов", "Кол-во мест", "Адрес", "Категория", "Состояние");
+                    break;
+                }
+
+                case 4:
+                {
+                    print("Нажата 4");
+                    cinx(x, "Выберите действие:", 3, "Добавить кинотеатр", "Удалить кинотеатр", "Изменить кинотеатр");
+
+                    switch (x)
+                    {
+                    case 1:
+                    {
+                        print("1) добавить фильм");
+                        Film a;
+                        a.input();
+                        a.save();
+                        print("добавлен");
+                        break;
+                    }
+                    default:
+                        break;
+                    }
+
+                    break;
+                }
+                default:
+                {
+                    cout << -12356889;
+                    break;
+                }
+                }
+                if (!x)
+                    break;
             }
-
-            break;
-        case 4:
-            print("Нажата 4");
-            cinx(x, "Выберите действие:", 3, "Добавить фильм", "Удалить фильм", "Изменить фильм");
-
-            switch (x)
-            {
-            case 1:
-            {
-                print("1) добавить фильм");
-                cout << "asdhadskjdhdsjkadhjadhksdddasjd\n";
-                Film a;
-                a.input();
-                a.save();
-                print("добавлен");
-                break;
-            }
-            default:
-                break;
-            }
-
-            break;
-
-        case 2:
-            print("Нажата 2");
-            flag = false;
-            break;
-
-        case 3:
-            print("Нажата 3");
-            flag = false;
-            break;
-
-        default:
             break;
         }
-        break;
-        // case 0:
-        //     return 0;
-    default:
-        // print("Неверное значение (введите цифру от 1 до 3)");
-        return 0;
+        case 2:
+        {
+            for (;;)
+            {
+
+                print("Нажата 1");
+                cinx(x, "Выберите действие:", 4, "Отобразить текущие фильмы", "Отобразить сведения фильма по ключу",
+                     "Поиск фильма", "Редактирование фильмов");
+                switch (x)
+                {
+                case 1:
+                {
+                    print("Список текущих фильмов:");
+                    get_films(films);
+                    for (Film &a : films)
+                        a.show();
+                    //cout << "ID : " << a.id << ". Название : " << a.name << ". Жанр : " << unvector(a.genres) << "." << endl;
+                    print("Введите для продолжения");
+                    getchar();
+                    break;
+                }
+                case 2:
+                {
+                    int j;
+                    print("Введите ключ нужного вам фильма или -1 для выхода");
+                    r_cin(j);
+                    if (j == -1)
+                        break;
+                    for (Film &a : films)
+                    {
+                        if (j == a.id)
+                        {
+                            a.show();
+                            j = -1;
+                        }
+                    }
+
+                    if (j != -1)
+                        print("Фильма с данным ключом не существует");
+                    break;
+                    //case 4:
+                    // print("Нажата 4");
+                    // cinx(x, "Выберите действие:", 3, "Добавить фильм", "Удалить фильм", "Изменить фильм");
+                }
+                case 3:
+                {
+                    string j;
+                    Film a(0);
+                    map<string, variant<string, int,vector<string>>>dict;
+                    dict["1"]= a.id;
+                    dict["2"]= a.name;
+                    dict["3"]=a.studio;
+                    dict["4"]= a.producers;
+                    dict["5"]= a.opers;
+                    dict["6"]= a.genres;
+                    dict["7"]= a.actors;
+                    
+                    
+                      cinx(j, "Установите нужные вам значения некоторым свойствам,"
+                        " прописав цифру свойства и значение через пробел (несколько значений - через запятую),"
+                        " например: 2 Человек-паук; или clear для очистки свойства: 2 clear", 8, "ID",
+                             "Название фильма", "Название студии", "Продюсеры", "Операторы", "Жанры", "Актеры", "ПОИСК");
+                    
+                    
+                    
+                    
+                    
+                     //int id, int places, int halls, string name,
+                    //string address, string category, bool state
+                    // int j;
+                    // Film a;
+                    // string str;
+                    // for (;;)
+                    // {
+                    //     map<string, string>dict;
+                    //     map<string, vector<string>>v_dict;
+                    //     dict["2"]=a.name;
+                    //     dict["3"]=a.studio;
+                    //     v_dict["4"]=a.producers;
+                    //     v_dict[]
+                        
+                      
+                        
+                    //     cin>>str;
+                    //     if (str[0]!='1')
+                    //     {
+                    //         if 
+                    //     }else a.id = atoi(str.substr(2).c_str());
+                        
+                        
+                        
+                        
+                    //     // switch (j)
+                    //     // {
+                    //     // case 1:
+                    //     // {
+                    //     //     print("Введите ID или -1 для очистки и выхода");
+                    //     //     int i;
+                    //     //     r_cin(i);
+                    //     //     break;
+                    //     // }
+                        
+
+                    //     default:
+                    //         break;
+                    //     }
+                    //     break;
+                    // }
+                    break;
+                }
+
+                case 4:
+                {
+                    print("Нажата 4");
+                    cinx(x, "Выберите действие:", 3, "Добавить фильм", "Удалить фильм", "Изменить фильм");
+
+                    switch (x)
+                    {
+                    case 1:
+                    {
+                        //print("1) добавить фильм");
+                        films.push_back(Film());
+                        films[films.size() - 1].save();
+                        print("добавлен");
+
+                        break;
+                    }
+                    default:
+                        break;
+                    }
+
+                    break;
+                }
+                default:
+                {
+                    cout << -12356889;
+                    break;
+                }
+                }
+                if (!x)
+                    break;
+            }
+            break;
+        }
+        case 3:
+        {
+            for (;;)
+            {
+                
+                print("Нажата 3");
+                cinx(x, "Выберите действие:", 4, "Отобразить текущие репертуары", "Отобразить сведения репертуара по ключу",
+                     "Поиск репертуаров", "Редактирование репертуаров");
+                switch (x)
+                {
+                case 1:
+                {
+                    print("Список текущих репертуаров:");
+                    for (Cinema const &a : cinemas)
+                        cout << "ID : " << a.id << "| Название : " << a.name << endl;
+                    print("Введите для продолжения");
+                    getchar();
+                    break;
+                }
+                case 2:
+                {
+                    print("Введите ключ нужного вам репертуара или -1 для выхода");
+
+                    break;
+                    //case 4:
+                    // print("Нажата 4");
+                    // cinx(x, "Выберите действие:", 3, "Добавить фильм", "Удалить фильм", "Изменить фильм");
+                }
+                case 3:
+                { //int id, int places, int halls, string name,
+                    //string address, string category, bool state
+                    cinx(x, "Установите нужные вам значения некоторым свойствам:", 5, "ID",
+                         "Фильм", "Дата", "Цена", "Свободные места");
+                    break;
+                }
+
+                case 4:
+                {
+                    print("Нажата 4");
+                    cinx(x, "Выберите действие:", 3, "Добавить репертуар", "Удалить репертуар", "Изменить репертуар");
+
+                    switch (x)
+                    {
+                    case 1:
+                    {
+                        print("1) добавить репертуар");
+
+                        print("добавлен");
+                        break;
+                    }
+                    default:
+                        break;
+                    }
+
+                    break;
+                }
+                default:
+                {
+                    cout << -12356889;
+                    break;
+                }
+                }
+                if (!x)
+                    break;
+            }
+            break;
+        }
+
+        default:
+
+            return 0;
+        }
     }
 
     getchar();
