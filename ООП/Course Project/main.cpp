@@ -4,8 +4,7 @@
 #include <fstream>
 #include <string>
 #include <numeric>
-//#include <windows.h>
-//#include <clocale>
+
 
 using namespace std;
 class Cinema;
@@ -47,7 +46,7 @@ void cinx(int &x, string text, int i, ...) //ввод x
 void get_all(vector<Cinema> &cinemas, vector<Film> &films, vector<Repertoire> &repertoires)
 {
     string line;
-    ifstream in("/data/cinemas.db"); // окрываем файл для чтения
+    ifstream in("data/films.db"); // окрываем файл для чтения
     if (in.is_open())
     {
         while (getline(in, line))
@@ -55,6 +54,7 @@ void get_all(vector<Cinema> &cinemas, vector<Film> &films, vector<Repertoire> &r
             cout << line << endl;
         }
     }
+    print("Соединение проозшоло успешно");
 }
 string str(vector<string> &b)
 {
@@ -155,16 +155,8 @@ public:
     Film() { print("Создан пустой фильм"); }
     ~Film();
 
-    void input()
+    void input() 
     {
-
-        // string const a[] = {"Название", "Киностудию",
-        //                     "Продюсеров через Enter (-1 для прекращения ввода)",
-        //                     "операторов через Enter (-1 для прекращения ввода)",
-        //                     "Жанры ерез Enter (-1 для прекращения ввода)",
-        //                     "Актеров ерез Enter (-1 для прекращения ввода)"};
-        //string *const a[] = {&name, &studio};
-
         print("Введите название:");
         getline(cin, name);
         print("Введите название киностудии");
@@ -227,6 +219,11 @@ int main()
         {
         case 1:
             print("Список текущих кинотетров:");
+            for (Cinema const &a: cinemas)
+            {
+                cout<<"ID : "<<a.id<<"| Название : "<<a.name<<endl;
+            }
+            
             break;
         case 4:
             print("Нажата 4");

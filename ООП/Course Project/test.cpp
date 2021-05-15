@@ -4,6 +4,7 @@
 #include <fstream>
 #include <numeric>
 #include <string>
+#include <regex>
 
 using namespace std;
 
@@ -22,21 +23,51 @@ void aa(vector<int>&b){
     
 }
 
+
+
+
+
+
+
+
+
+
+
 int main()
 {
-        system("chcp 1251");
+        // system("chcp 1251");
 vector<string> a;
+string c = {"0<Человек паук><Марвел><'стэн ли''кирстен данст''марк уэбб'><'дон бёрджесс'><'фантастика''супергерои''экшн''драма'><'Тоби Магуайр''Уиллем Дефо''Кирстен Данст''Джеймс Франко'>"};
 string b;
-for(;;){
-getline(cin, b);
-if(b=="-1") break;
-if(b!="")
-a.push_back(b);
-}
-for (string const &x:a)
-{
-    cout<<x<<endl;
-}
+regex rx(R"([0-9*])");
+smatch res;
+cout<<regex_match(c,res,rx)<<endl<<res.str()<<endl;
+
+
+
+
+getchar();
+
+
+
+
+
+
+
+
+
+// for(;;){
+// getline(cin, b);
+// if(b=="-1") break;
+// if(b!="")
+// a.push_back(b);
+// }
+// for (string const &x:a)
+// {
+//     cout<<x<<endl;
+// }
+
+
 
 
 getchar();
