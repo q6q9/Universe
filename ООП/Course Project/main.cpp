@@ -4,7 +4,7 @@
 #include <fstream>
 #include <string>
 #include <numeric>
-
+#include <regex>
 
 using namespace std;
 class Cinema;
@@ -43,18 +43,23 @@ void cinx(int &x, string text, int i, ...) //ввод x
     cc();
     cls();
 }
-void get_all(vector<Cinema> &cinemas, vector<Film> &films, vector<Repertoire> &repertoires)
+void push_line(string &str)
 {
-    string line;
-    ifstream in("data/films.db"); // окрываем файл для чтения
-    if (in.is_open())
+    for (;;)
     {
-        while (getline(in, line))
+        getline(cin, str);
+        string a;
+        for (size_t i = 0; i < str.size(); i++)
         {
-            cout << line << endl;
+            if (str[i] != ' ')
+                a += str[i];
         }
+        str = a;
+        if (str == "")
+            print("Err: empty line");
+        else
+            return;
     }
-    print("Соединение проозшоло успешно");
 }
 string str(vector<string> &b)
 {
@@ -68,19 +73,33 @@ string str(string &b)
 {
     return "<" + b + ">";
 }
-void push_vector(vector<string>&a){
+void push_vector(vector<string> &a)
+{
     string b;
+    string x;
     for (;;)
+    {
+        cout << "_" << b << "_" << endl;
+        getline(cin, b);
+        x = "";
+        for (size_t i = 0; i < b.size(); i++)
         {
-            getline(cin, b);
-            if (b == "-1")
-                break;
-            if (b != "")
-                a.push_back(b);
+            if (b[i] != ' ')
+                x += b[i];
         }
+        b = x;
+        cout << "_" << b << "_" << endl;
+        if (b == "")
+        {
+            print("Err: empty line");
+            continue;
+        }
+        if (b == "-1")
+            break;
+        a.push_back(b);
+        break;
+    }
 }
-
-
 
 class Repertoire
 {
@@ -151,16 +170,19 @@ public:
     vector<string> opers;
     vector<string> genres;
     vector<string> actors;
-    Film(string name, string genre);
+    Film(string str);
     Film() { print("Создан пустой фильм"); }
+    Film(int id, string name, string studio,
+         vector<string> producers, vector<string> opers,
+         vector<string> genres, vector<string> actors);
     ~Film();
 
-    void input() 
+    void input()
     {
         print("Введите название:");
-        getline(cin, name);
+        push_line(name);
         print("Введите название киностудии");
-        getline(cin, studio);
+        push_line(studio);
         print("Введите продюсеров через Enter (-1 для прекращения ввода)");
         push_vector(producers);
         print("Введите операторов через Enter (-1 для прекращения ввода)");
@@ -182,22 +204,86 @@ public:
         }
         out.close();
     }
-};
 
-// Film::Film(string name, string genre) : name(name), genre(genre)
-// {
-//     print("Create new film!");
-//     cout << "Название - " << name << ", Жанр - " << genre << endl;
-// }
+    void upload();
+};
+Film::Film(string str)
+{
+    regex reg("\\d+");
+    sregex_iterator abc(str.begin(),
+                                 str.end(), reg);
+    id = stoi(smatch(*abc).str());
+
+    cout << "dajshdjashdj\t" << id;
+    reg=("(<.*?>)");
+    
+    sregex_iterator currentMatch(str.begin(),
+                                 str.end(), reg);
+
+    sregex_iterator lastMatch;
+    int i = 0;
+    string s;
+    while (currentMatch != lastMatch)
+    {   
+        s="";
+        smatch match = *currentMatch;
+        for (size_t i = 0; i < match.str().size(); i++)
+        {
+             if (i< match.str().size()-2)
+             s+=  match.str()[i+1];
+        }
+        cout<<"\t"<<s<<endl;
+        // switch (i)
+        // {
+        // case 0:
+        //     name = mat
+        //     break;
+        
+        // default:
+        //     break;
+        // }
+        // id = stoi(smatch(*currentMatch).str());
+        currentMatch++;
+        i++;
+    }
+    cout << "dajshdjashdj\t" << id;
+}
+
+Film::Film(int id, string name, string studio,
+           vector<string> producers, vector<string> opers,
+           vector<string> genres, vector<string> actors) : id(id), name(name), studio(studio), producers(producers),
+                                                           opers(opers), genres(genres), actors(actors)
+{
+    print("Конуструктор создания фильма был сипользован!\n");
+}
 
 Film::~Film()
 {
+}
+
+void get_all(vector<Cinema> &cinemas, vector<Film> &films, vector<Repertoire> &repertoires)
+{
+    string line;
+    ifstream in("data/films.db"); // окрываем файл для чтения
+    if (in.is_open())
+    {
+        while (getline(in, line))
+        {
+            cout << line << endl;
+            films.push_back(Film(line));
+        }
+    }
+    print("Соединение проозшоло успешно");
 }
 
 int main()
 {
     system("chcp 1251");
     cls();
+
+    // Film ax(0,"Человек паук", "Марвел",{"стэн ли","кирстен данст","марк уэбб"},
+    //             {"дон бёрджесс"},{"фантастика","супергерои","экшн","драма"},{"Тоби Магуайр","Уиллем Дефо",
+    //             "Кирстен Данст","Джеймс Франко"});
 
     int x;
     bool flag = true;
@@ -219,11 +305,11 @@ int main()
         {
         case 1:
             print("Список текущих кинотетров:");
-            for (Cinema const &a: cinemas)
+            for (Cinema const &a : cinemas)
             {
-                cout<<"ID : "<<a.id<<"| Название : "<<a.name<<endl;
+                cout << "ID : " << a.id << "| Название : " << a.name << endl;
             }
-            
+
             break;
         case 4:
             print("Нажата 4");
