@@ -1,24 +1,75 @@
 #include <iostream>
-#include <stdarg.h>
+
 using namespace std;
-
-
-void print(string text) { cout << text << endl; } //вывод текста
-void menu(int i, ...) //контекстное меню
-{
-va_list t;
-va_start(t, i);
-print("Выберите действие:");
-for (size_t j = 0; j <= i; j++)
-printf("[%d] - %s\n", j, (j ? va_arg(t, char *) : "Вернуться (выход)"));
-}
-
 
 int main()
 {
         system("chcp 1251");
-menu(4,"Отобразить текущие кинотеатры", "Отобразить сведения кинотеатра по ключу",
-"Поиск кинотеатров", "Редактирование кинотеатров");
-cout<<5;
-getchar();
+        int x;
+        cin >> x;
+        switch (x)
+        {
+        case 1:
+                switch (x)
+                {
+                case 1:
+                        switch (x)
+                        {
+                        case 1:
+                                break;
+                        case 2:
+                                break;
+                        default:
+                                break;
+                        }
+                        break;
+                case 2:
+                        switch (x)
+                        {
+                        case 1:
+                                break;
+                        case 2:
+                                break;
+                        default:
+                                break;
+                        }
+                        break;
+                default:
+                        switch (x)
+                        {
+                        case 1:
+                                break;
+                        case 2:
+                                break;
+                        default:
+                                break;
+                        }
+                        break;
+                }
+                break;
+        case 2:
+                switch (x)
+                {
+                case 1:
+                        break;
+                case 2:
+                        break;
+                default:
+                        break;
+                }
+                break;
+        default:
+                switch (x)
+                {
+                case 1:
+                        break;
+                case 2:
+                        break;
+                default:
+                        break;
+                }
+                break;
+        }
+
+        getchar();
 }
