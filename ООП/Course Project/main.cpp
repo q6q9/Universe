@@ -5,11 +5,16 @@
 #include <string>
 #include <numeric>
 #include <regex>
+#include <unordered_map>
+#include <map>
 
 using namespace std;
+
 class Cinema;
 class Film;
 class Repertoire;
+void get_films(vector<Film> &films);
+void get_all(vector<Cinema> &cinemas, vector<Film> &films, vector<Repertoire> &repertoires);
 string unvector(const vector<string> &a)
 {
     string s;
@@ -101,10 +106,9 @@ void push_vector(vector<string> &a)
             print("Err: empty line");
             continue;
         }
-        if (b == "-1")
+        if (b == "-1" && a.size() > 0)
             break;
         a.push_back(b);
-        break;
     }
 }
 vector<string> parsing(string &str, regex &reg)
@@ -127,6 +131,19 @@ vector<string> parsing(string &str, regex &reg)
     }
     return a;
 }
+void r_cin(int &j)
+{
+    for (;;)
+    {
+        cin >> j;
+        if (cin.fail())
+            cc();
+        else
+            break;
+        print("Неверный ввод, попробуйте ввести число:");
+    }
+}
+
 class Repertoire
 {
 private:
@@ -196,6 +213,7 @@ public:
     vector<string> opers;
     vector<string> genres;
     vector<string> actors;
+    //Film *
     Film(string str);
     Film();
     Film(Film const &a);
@@ -204,8 +222,32 @@ public:
          vector<string> genres, vector<string> actors);
     ~Film();
 
+    //123467
+    //10
+    void set_id()
+    {
+        id = 1;
+        bool z = false;
+        vector<Film> films;
+        get_films(films);
+        vector<int> ids(films.size());
+        for (;;)
+        {
+            z = false;
+            for (Film const &a : films)
+                if (id == a.id)
+                {
+                    z = true;
+                    id++;
+                    continue;
+                }
+            if (!z)
+                return;
+        }
+    }
     void input()
     {
+        set_id();
         print("Введите название:");
         push_line(name);
         print("Введите название киностудии");
@@ -219,6 +261,15 @@ public:
         print("Введите актеров ерез Enter (-1 для прекращения ввода)");
         push_vector(actors);
         print("Успех");
+    }
+
+    void show()
+    {
+        cout << "ID : " << id << ". Название : " << name << ". Жанр(ы) : " << unvector(genres)
+             << ". Студия : " << studio << ".\nПродюссер(ы) : " << unvector(producers)
+             << ". Оператор(ы) : " << unvector(opers)
+             << ".\nАктер(ы) : " << unvector(actors) << endl
+             << endl;
     }
 
     void save()
@@ -266,9 +317,9 @@ Film::Film(int id, string name, string studio,
 Film::~Film()
 {
 }
-
-void get_all(vector<Cinema> &cinemas, vector<Film> &films, vector<Repertoire> &repertoires)
+void get_films(vector<Film> &films)
 {
+    films.clear();
     string line;
     ifstream in("data/films.db"); // окрываем файл для чтения
     if (in.is_open())
@@ -279,6 +330,10 @@ void get_all(vector<Cinema> &cinemas, vector<Film> &films, vector<Repertoire> &r
             films.push_back(Film(line));
         }
     }
+}
+void get_all(vector<Cinema> &cinemas, vector<Film> &films, vector<Repertoire> &repertoires)
+{
+    get_films(films);
     print("Соединение проозшоло успешно");
 }
 
@@ -382,16 +437,32 @@ int main()
                 case 1:
                 {
                     print("Список текущих фильмов:");
-                    for (Film const &a : films)
-                        cout << "ID : " << a.id << ". Название : " << a.name << ". Жанр : " << unvector(a.genres)<<"."<< endl;
+                    get_films(films);
+                    for (Film &a : films)
+                        a.show();
+                    //cout << "ID : " << a.id << ". Название : " << a.name << ". Жанр : " << unvector(a.genres) << "." << endl;
                     print("Введите для продолжения");
                     getchar();
                     break;
                 }
                 case 2:
                 {
+                    int j;
                     print("Введите ключ нужного вам фильма или -1 для выхода");
+                    r_cin(j);
+                    if (j == -1)
+                        break;
+                    for (Film &a : films)
+                    {
+                        if (j == a.id)
+                        {
+                            a.show();
+                            j = -1;
+                        }
+                    }
 
+                    if (j != -1)
+                        print("Фильма с данным ключом не существует");
                     break;
                     //case 4:
                     // print("Нажата 4");
@@ -400,8 +471,28 @@ int main()
                 case 3:
                 { //int id, int places, int halls, string name,
                     //string address, string category, bool state
-                    cinx(x, "Установите нужные вам значения некоторым свойствам:", 7, "ID",
-                         "Название фильма", "Название студии", "Продюсеры", "Операторы", "Жанры", "Актеры");
+                    int j;
+                    for (;;)
+                    {
+                        map<string, auto>;
+                        // cinx(j, "Установите нужные вам значения некоторым свойствам:", 8, "ID",
+                        //      "Название фильма", "Название студии", "Продюсеры", "Операторы", "Жанры", "Актеры", "ПОИСК");
+                        // switch (j)
+                        // {
+                        // case 1:
+                        // {
+                        //     print("Введите ID или -1 для очистки и выхода");
+                        //     int i;
+                        //     r_cin(i);
+                        //     break;
+                        // }
+                        
+
+                        // default:
+                        //     break;
+                        // }
+                        break;
+                    }
                     break;
                 }
 
@@ -416,7 +507,9 @@ int main()
                     {
                         //print("1) добавить фильм");
                         films.push_back(Film());
+                        films[films.size() - 1].save();
                         print("добавлен");
+
                         break;
                     }
                     default:

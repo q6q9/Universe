@@ -18,21 +18,21 @@ void menu(int i, ...)                             //контекстное ме�
     va_start(t, i);
     print("Выберите действие:");
     for (size_t j = 0; j <= i; j++)
-        printf("[%d] - %s\n", j, (j ? va_arg(t, char *) : "Вернуться (выход)"));
+        printf("[%d] - %s\n", j, (j ? va_arg(t, char*) : "Вернуться (выход)"));
 }
 void cc() //очистка потока ввода
 {
     cin.clear();
     cin.ignore(32767, '\n');
 }
-void cinx(int &x, string text, int i, ...) //ввод x
+void cinx(int& x, string text, int i, ...) //ввод x
 {
 
     print(text);
     va_list t;
     va_start(t, i);
     for (size_t j = 0; j <= i; j++)
-        printf("[%d] - %s\n", j, (j ? va_arg(t, char *) : "Вернуться (выход)"));
+        printf("[%d] - %s\n", j, (j ? va_arg(t, char*) : "Вернуться (выход)"));
     cin >> x;
     while (cin.fail() || (x < 0 || x > i))
     {
@@ -43,7 +43,7 @@ void cinx(int &x, string text, int i, ...) //ввод x
     cc();
     cls();
 }
-void push_line(string &str)//ввод не пустых строк
+void push_line(string& str)
 {
     for (;;)
     {
@@ -61,25 +61,25 @@ void push_line(string &str)//ввод не пустых строк
             return;
     }
 }
-string str(vector<string> &b)//"<%s>",b[]
+string str(vector<string>& b)
 {
     string a = "<";
-    for (string &x : b)
+    for (string& x : b)
         a += "'" + x + "'";
 
     return a + ">";
 }
-string str(string &b)//"<%s>",b
+string str(string& b)
 {
     return "<" + b + ">";
 }
-void push_vector(vector<string> &a)
+void push_vector(vector<string>& a)
 {
     string b;
     string x;
     for (;;)
     {
-        // cout << "_" << b << "_" << endl;
+        cout << "_" << b << "_" << endl;
         getline(cin, b);
         x = "";
         for (size_t i = 0; i < b.size(); i++)
@@ -88,7 +88,7 @@ void push_vector(vector<string> &a)
                 x += b[i];
         }
         b = x;
-        // cout << "_" << b << "_" << endl;
+        cout << "_" << b << "_" << endl;
         if (b == "")
         {
             print("Err: empty line");
@@ -100,7 +100,7 @@ void push_vector(vector<string> &a)
         break;
     }
 }
-vector<string> parsing(string &str, regex &reg)
+vector<string> parsing(string& str, regex& reg)
 {
     string s;
     vector<string> a;
@@ -115,9 +115,11 @@ vector<string> parsing(string &str, regex &reg)
             if (i < match.str().size() - 2)
                 s += match.str()[i + 1];
         }
+        cout << -1 << "\t\t" << s << endl;
         a.push_back(s);
         currentMatch++;
     }
+    cout << -234;
     return a;
 }
 class Repertoire
@@ -130,15 +132,15 @@ private:
 public:
     int id, price, free_places;
     string date;
-    Film *film;
+    Film* film;
     Repertoire(int id, int price, int free_places,
-               string date, Film *film);
+        string date, Film* film);
     ~Repertoire();
 };
 
 Repertoire::Repertoire(int id, int price, int free_places,
-                       string date, Film *film) : id(id), price(price),
-                                                  free_places(free_places), date(date), film(film)
+    string date, Film* film) : id(id), price(price),
+    free_places(free_places), date(date), film(film)
 {
 }
 
@@ -158,13 +160,13 @@ public:
     string name, address, category;
     bool state;
     Cinema(int id, int places, int halls, string name,
-           string address, string category, bool state);
+        string address, string category, bool state);
     ~Cinema();
 };
 
 Cinema::Cinema(int id, int places, int halls, string name,
-               string address, string category, bool state) : id(id), places(places), halls(halls), name(name),
-                                                              address(address), category(category), state(state)
+    string address, string category, bool state) : id(id), places(places), halls(halls), name(name),
+    address(address), category(category), state(state)
 {
 }
 
@@ -190,14 +192,11 @@ public:
     vector<string> genres;
     vector<string> actors;
     Film(string str);
-    Film()
-    {
-        // print("Создан пустой фильм");
-    }
-    Film(Film const &a);
+    Film() { print("Создан пустой фильм"); }
+    Film(Film const& a);
     Film(int id, string name, string studio,
-         vector<string> producers, vector<string> opers,
-         vector<string> genres, vector<string> actors);
+        vector<string> producers, vector<string> opers,
+        vector<string> genres, vector<string> actors);
     ~Film();
 
     void input()
@@ -226,44 +225,83 @@ public:
                 << str(opers) << str(genres) << str(actors) << endl;
         }
         out.close();
-        print("Фильм сохранен");
     }
 
     void upload();
 };
 
-Film::Film(Film const &a) : id(a.id), name(a.name), studio(a.studio), producers(a.producers),
-                            opers(a.opers), genres(a.genres), actors(a.actors)
+Film::Film(Film const& a) : id(a.id), name(a.name), studio(a.studio), producers(a.producers),
+opers(a.opers), genres(a.genres), actors(a.actors)
 {
-    // print("Использован КОНСТУРКТОР ПОКПИРОВАНИЯ");
+    print("Использован КОНСТУРКТОР ПОКПИРОВАНИЯ");
 }
 Film::Film(string str)
 {
     regex reg("\\d+");
     sregex_iterator abc(str.begin(),
-                        str.end(), reg);
+        str.end(), reg);
+    // id = stoi(smatch(*abc).str());
+    cout << "\t" << id << endl;
     vector<string> a;
     reg = ("(<.*?>)");
     a = parsing(str, reg);
     reg = ("'.*?'");
+    parsing(a[2], reg);
+    cout << -122345567468;
+    // *this = Film(stoi(smatch(*abc).str()), a[0], a[1], parsing(a[2],reg), parsing(a[3],reg),
+    //              parsing(a[4],reg), parsing(a[5],reg));
 
-    *this = Film(stoi(smatch(*abc).str()), a[0], a[1], parsing(a[2], reg), parsing(a[3], reg),
-                 parsing(a[4], reg), parsing(a[5], reg));
+    // name = a[0];
+    // studio = a[1];
+    // producers
+    // reg = ("(<.*?>)");
+    // sregex_iterator currentMatch(str.begin(),
+    //                              str.end(), reg);
+    // sregex_iterator lastMatch;
+    // int i = 0;
+    // string s;
+    // while (currentMatch != lastMatch)
+    // {
+    //     s = "";
+    //     smatch match = *currentMatch;
+    //     for (size_t i = 0; i < match.str().size(); i++)
+    //     {
+    //         if (i < match.str().size() - 2)
+    //             s += match.str()[i + 1];
+    //     }
+    //     cout << "\t" << s << endl;
+    //     switch (i)
+    //     {
+    //     case 0:
+    //         name = s;
+    //         break;
+    //     case 1:
+    //         studio = s;
+    //         break;
+    //     case 2:
+
+    //     default:
+    //         break;
+    //     }
+    //     id = stoi(smatch(*currentMatch).str());
+    //     currentMatch++;
+    //     i++;
+    // }
 }
 
 Film::Film(int id, string name, string studio,
-           vector<string> producers, vector<string> opers,
-           vector<string> genres, vector<string> actors) : id(id), name(name), studio(studio), producers(producers),
-                                                           opers(opers), genres(genres), actors(actors)
+    vector<string> producers, vector<string> opers,
+    vector<string> genres, vector<string> actors) : id(id), name(name), studio(studio), producers(producers),
+    opers(opers), genres(genres), actors(actors)
 {
-    //  print("Конуструктор создания фильма был сипользован!\n");
+    print("Конуструктор создания фильма был сипользован!\n");
 }
 
 Film::~Film()
 {
 }
 
-void get_all(vector<Cinema> &cinemas, vector<Film> &films, vector<Repertoire> &repertoires)
+void get_all(vector<Cinema>& cinemas, vector<Film>& films, vector<Repertoire>& repertoires)
 {
     string line;
     ifstream in("data/films.db"); // окрываем файл для чтения
@@ -271,8 +309,10 @@ void get_all(vector<Cinema> &cinemas, vector<Film> &films, vector<Repertoire> &r
     {
         while (getline(in, line))
         {
-            //cout << line << endl;
+            cout << line << endl;
+            cout << "\t\t\t321 перед копир\n";
             films.push_back(Film(line));
+            cout << "\t\t\t321 после копир\n";
         }
     }
     print("Соединение проозшоло успешно");
@@ -294,8 +334,6 @@ int main()
     vector<Repertoire> repertoires;
     get_all(cinemas, films, repertoires);
 
-   
-
     cinx(x, "Выберите область, с которой вы будете работать:", 3, "Кинотеатры", "Фильмы", "Репертуары");
 
     switch (x)
@@ -304,12 +342,12 @@ int main()
         print("Нажата 1");
 
         cinx(x, "Выберите действие:", 4, "Отобразить текущие кинотеатры", "Отобразить сведения кинотеатра по ключу",
-             "Поиск кинотеатров", "Редактирование кинотеатров");
+            "Поиск кинотеатров", "Редактирование кинотеатров");
         switch (x)
         {
         case 1:
             print("Список текущих кинотетров:");
-            for (Cinema const &a : cinemas)
+            for (Cinema const& a : cinemas)
             {
                 cout << "ID : " << a.id << "| Название : " << a.name << endl;
             }
@@ -324,6 +362,7 @@ int main()
             case 1:
             {
                 print("1) добавить фильм");
+                cout << "asdhadskjdhdsjkadhjadhksdddasjd\n";
                 Film a;
                 a.input();
                 a.save();
@@ -350,8 +389,8 @@ int main()
             break;
         }
         break;
-    // case 0:
-    //     return 0;
+        // case 0:
+        //     return 0;
     default:
         // print("Неверное значение (введите цифру от 1 до 3)");
         return 0;
