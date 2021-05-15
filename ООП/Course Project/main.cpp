@@ -7,8 +7,11 @@
 #include <regex>
 #include <unordered_map>
 #include <map>
+#include <variant>
+
 
 using namespace std;
+
 
 class Cinema;
 class Film;
@@ -50,6 +53,24 @@ void cinx(int &x, string text, int i, ...) //ввод x
     {
         cc();
         cout << "Неверное значение (введите цифру от 1 до " << i << ")" << endl;
+        cin >> x;
+    }
+    cc();
+    cls();
+}
+void cinx(string &x, string text, int i, ...) //ввод x
+{
+
+    print(text);
+    va_list t;
+    va_start(t, i);
+    for (size_t j = 0; j <= i; j++)
+        printf("[%d] - %s\n", j, (j ? va_arg(t, char *) : "Вернуться (выход)"));
+    cin >> x;
+    while ( (int)x[0] < 0 || (int)x[0] > i ||x[1]!=' ')
+    {
+        
+        cout << "Неверное значение (введите цифру от 1 до " << i << " и команду)" << endl;
         cin >> x;
     }
     cc();
@@ -216,6 +237,7 @@ public:
     //Film *
     Film(string str);
     Film();
+    Film(int a);
     Film(Film const &a);
     Film(int id, string name, string studio,
          vector<string> producers, vector<string> opers,
@@ -306,6 +328,7 @@ Film::Film(string str)
                  parsing(a[4], reg), parsing(a[5], reg));
 }
 Film::Film() { input(); }
+Film::Film(int a){}
 Film::Film(int id, string name, string studio,
            vector<string> producers, vector<string> opers,
            vector<string> genres, vector<string> actors) : id(id), name(name), studio(studio), producers(producers),
@@ -469,30 +492,69 @@ int main()
                     // cinx(x, "Выберите действие:", 3, "Добавить фильм", "Удалить фильм", "Изменить фильм");
                 }
                 case 3:
-                { //int id, int places, int halls, string name,
+                {
+                    string j;
+                    Film a(0);
+                    map<string, variant<string, int,vector<string>>>dict;
+                    dict["1"]= a.id;
+                    dict["2"]= a.name;
+                    dict["3"]=a.studio;
+                    dict["4"]= a.producers;
+                    dict["5"]= a.opers;
+                    dict["6"]= a.genres;
+                    dict["7"]= a.actors;
+                    
+                    
+                      cinx(j, "Установите нужные вам значения некоторым свойствам,"
+                        " прописав цифру свойства и значение через пробел (несколько значений - через запятую),"
+                        " например: 2 Человек-паук; или clear для очистки свойства: 2 clear", 8, "ID",
+                             "Название фильма", "Название студии", "Продюсеры", "Операторы", "Жанры", "Актеры", "ПОИСК");
+                    
+                    
+                    
+                    
+                    
+                     //int id, int places, int halls, string name,
                     //string address, string category, bool state
-                    int j;
-                    for (;;)
-                    {
-                        map<string, auto>;
-                        // cinx(j, "Установите нужные вам значения некоторым свойствам:", 8, "ID",
-                        //      "Название фильма", "Название студии", "Продюсеры", "Операторы", "Жанры", "Актеры", "ПОИСК");
-                        // switch (j)
-                        // {
-                        // case 1:
-                        // {
-                        //     print("Введите ID или -1 для очистки и выхода");
-                        //     int i;
-                        //     r_cin(i);
-                        //     break;
-                        // }
+                    // int j;
+                    // Film a;
+                    // string str;
+                    // for (;;)
+                    // {
+                    //     map<string, string>dict;
+                    //     map<string, vector<string>>v_dict;
+                    //     dict["2"]=a.name;
+                    //     dict["3"]=a.studio;
+                    //     v_dict["4"]=a.producers;
+                    //     v_dict[]
+                        
+                      
+                        
+                    //     cin>>str;
+                    //     if (str[0]!='1')
+                    //     {
+                    //         if 
+                    //     }else a.id = atoi(str.substr(2).c_str());
+                        
+                        
+                        
+                        
+                    //     // switch (j)
+                    //     // {
+                    //     // case 1:
+                    //     // {
+                    //     //     print("Введите ID или -1 для очистки и выхода");
+                    //     //     int i;
+                    //     //     r_cin(i);
+                    //     //     break;
+                    //     // }
                         
 
-                        // default:
-                        //     break;
-                        // }
-                        break;
-                    }
+                    //     default:
+                    //         break;
+                    //     }
+                    //     break;
+                    // }
                     break;
                 }
 
@@ -533,7 +595,7 @@ int main()
         {
             for (;;)
             {
-
+                
                 print("Нажата 3");
                 cinx(x, "Выберите действие:", 4, "Отобразить текущие репертуары", "Отобразить сведения репертуара по ключу",
                      "Поиск репертуаров", "Редактирование репертуаров");
