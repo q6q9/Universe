@@ -37,28 +37,10 @@ int main()
 {
         system("chcp 1251");
 vector<string> a;
-string c = "123 45 78 0 <Человек паук><Марвел><'стэн ли''кирстен данст''марк уэбб'><'дон бёрджесс'><'фантастика''супергерои''экшн''драма'><'Тоби Магуайр''Уиллем Дефо''Кирстен Данст''Джеймс Франко'>";
 string b;
-regex rx(R"(0)");
-cmatch res;
-cout<<regex_match(c.c_str(), res, rx)<<endl;;
-// auto res_0 = sregex_iterator(c.begin(),c.end(), rx);
-// auto res_1 = sregex_iterator();
-
-
-for (size_t i = 0; i < res.size(); i++)
-{       
-        
-        cout<<"one\n";
-        cout<< res[i]<<endl;
-        cout<<"two\n";
-}
-
-cout<<0000;
-
-
-
-
+a.push_back("asd");
+b=a;
+cout<<b;
 
 getchar();
 
