@@ -4,6 +4,7 @@
 #include <fstream>
 #include <string>
 #include <regex>
+#include <algorithm>
 
 #define ctoi(j) atoi(string({j[0]}).c_str())
 using namespace std;
@@ -147,6 +148,7 @@ void cc() //очистка потока ввода
     cin.ignore(32767, '\n');
 }
 void cinx(int &x, string text, int i, ...) //ввод x
+
 {
 
     print(text);
@@ -163,6 +165,17 @@ void cinx(int &x, string text, int i, ...) //ввод x
     }
     cc();
     cls();
+}
+void cinx(int &x, string text)
+{
+    print(text);
+    cin >> x;
+    while (cin.fail())
+    {
+        cc();
+        cout << "Неверное значение (введите число)" << endl;
+        cin >> x;
+    }
 }
 void cinx(string &x, string text, int i, ...) //ввод x
 {
@@ -395,7 +408,7 @@ public:
     void find()
     {
         vector<Film> films;
-        vector<Film> films_;
+        vector<Film> _films;
         get_films(films);
         // cout << -1114213;
 
@@ -404,9 +417,13 @@ public:
             for (Film a : films)
             {
                 if (id == a.id)
-                {   
-                    search(f)
-                    a.show();
+                {
+                    if (!binary_search(_films.begin(), _films.end(), a))
+                    {
+                        a.show();
+                    }
+                    else
+                        _films.push_back(a);
                 }
             }
         }
@@ -415,7 +432,14 @@ public:
             for (Film a : films)
             {
                 if (low(name) == low(a.name))
-                    a.show();
+                {
+                    if (!binary_search(_films.begin(), _films.end(), a))
+                    {
+                        a.show();
+                    }
+                    else
+                        _films.push_back(a);
+                }
             }
         }
         if (!studio.empty())
@@ -423,7 +447,14 @@ public:
             for (Film a : films)
             {
                 if (low(studio) == low(a.studio))
-                    a.show();
+                {
+                    if (!binary_search(_films.begin(), _films.end(), a))
+                    {
+                        a.show();
+                    }
+                    else
+                        _films.push_back(a);
+                }
             }
         }
         if (!producers.empty())
@@ -436,7 +467,13 @@ public:
                     {
                         // cout << low(x) << "==" << low(y) << endl;
                         if (low(x) == low(y))
-                            a.show();
+                        {
+                            if (!binary_search(_films.begin(), _films.end(), a))
+                            {
+                                a.show();
+                                _films.push_back(a);
+                            }
+                        }
                     }
                 }
             }
@@ -451,7 +488,13 @@ public:
                     {
                         // cout << low(x) << "==" << low(y) << endl;
                         if (low(x) == low(y))
-                            a.show();
+                        {
+                            if (!binary_search(_films.begin(), _films.end(), a))
+                            {
+                                a.show();
+                                _films.push_back(a);
+                            }
+                        }
                     }
                 }
             }
@@ -466,7 +509,14 @@ public:
                     {
                         // cout << low(x) << "==" << low(y) << endl;
                         if (low(x) == low(y))
-                            a.show();
+                        {
+
+                            if (!binary_search(_films.begin(), _films.end(), a))
+                            {
+                                a.show();
+                                _films.push_back(a);
+                            }
+                        }
                     }
                 }
             }
@@ -481,12 +531,23 @@ public:
                     {
                         // cout << low(x) << "==" << low(y) << endl;
                         if (low(x) == low(y))
-                            a.show();
+                        {
+                            if (!binary_search(_films.begin(), _films.end(), a))
+                            {
+                                a.show();
+                                _films.push_back(a);
+                            }
+                        }
                     }
                 }
             }
         }
+
+        print("Введите для продолжения:");
+        getchar();
+        cls();
     }
+
     void show()
     {
         cout << "ID : " << id << ". Название : " << name << ". Жанр(ы) : " << unvector(genres)
@@ -509,6 +570,15 @@ public:
     }
 
     void upload();
+
+    bool operator<(const Film &a) const
+    {
+        if ((id == a.id) && (name == a.name) && (studio == a.studio) &&
+            (producers == a.producers) && (opers == a.opers) &&
+            (genres == a.genres) && (actors == a.actors))
+            return true;
+        return false;
+    }
 };
 
 Film::Film(Film const &a) : id(a.id), name(a.name), studio(a.studio), producers(a.producers),
@@ -767,7 +837,6 @@ int main()
                     cout << -1;
                     a.show();
                     a.find();
-                    getchar();
 
                     //int id, int places, int halls, string name,
                     //string address, string category, bool state
@@ -818,11 +887,18 @@ int main()
                     {
                         //print("1) добавить фильм");
                         films.push_back(Film());
-                        films[films.size() - 1].save();
+                        films[films.size() - 1].save(); //
                         print("добавлен");
 
                         break;
                     }
+                    case 2:
+                    {
+                        int j;
+                        cinx(j, "Введите ключ фильма, который вы хотите удалить или -1 для выхода:");
+                        
+                    }
+
                     default:
                         break;
                     }
