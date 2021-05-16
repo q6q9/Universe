@@ -5,7 +5,11 @@
 #include <string>
 #include <regex>
 #include <algorithm>
+#include <iterator>
+#include <ctime>
+#include <random>
 
+#define rand(x) engine() % x
 #define ctoi(j) atoi(string({j[0]}).c_str())
 using namespace std;
 
@@ -148,7 +152,6 @@ void cc() //очистка потока ввода
     cin.ignore(32767, '\n');
 }
 void cinx(int &x, string text, int i, ...) //ввод x
-
 {
 
     print(text);
@@ -631,9 +634,16 @@ void get_all(vector<Cinema> &cinemas, vector<Film> &films, vector<Repertoire> &r
     get_films(films);
     print("Соединение проозшоло успешно");
 }
+void set_all(vector<Cinema> &cinemas, vector<Film> &films, vector<Repertoire> &repertoires)
+{
+
+    print("Соединение проозшоло успешно");
+}
 
 int main()
 {
+    std::mt19937 engine; // mt19937 как один из вариантов
+    engine.seed(std::time(nullptr));
     system("chcp 1251");
     cls();
     cout << low("Привет мир");
@@ -646,7 +656,7 @@ int main()
     get_all(cinemas, films, repertoires);
     for (;;)
     {
-
+        print("Для СОХРАНЕНИЯ ИЗМЕНЕНИЙ выходите из программы с помощью меню!");
         cinx(y, "Выберите область, с которой вы будете работать:", 3, "Кинотеатры", "Фильмы", "Репертуары");
 
         switch (y)
@@ -885,20 +895,88 @@ int main()
                     {
                     case 1:
                     {
-                        //print("1) добавить фильм");
-                        films.push_back(Film());
-                        films[films.size() - 1].save(); //
-                        print("добавлен");
 
+                        films.push_back(Film());
+                        //films[films.size() - 1].save(); //
+                        print("Успешно добавлен");
                         break;
                     }
                     case 2:
                     {
-                        int j;
-                        cinx(j, "Введите ключ фильма, который вы хотите удалить или -1 для выхода:");
-                        
-                    }
+                        for (;;)
+                        {
+                            int j;
+                            int x = rand(10);
+                            cinx(j, "Введите ключ фильма, который вы хотите удалить или -1 для выхода:");
+                            if (j == -1)
+                                break;
 
+                            for (auto it = films.begin(); it < films.end(); it++)
+                            {
+                                if ((*it).id == j)
+                                {
+
+                                    print("Фильм который вы хотите удалить:");
+                                    (*it).show();
+                                    cout << "Для подтверждения удаления введите " << x << " :";
+                                    cinx(j, "");
+                                    if (j == x)
+                                    {
+                                        films.erase(it);
+                                        print("Успех");
+                                        j = -1337;
+                                    }
+                                    else
+                                    {
+                                        print("Отмена");
+                                        j = -1337;
+                                    }
+                                    break;
+                                }
+                            }
+                            if (j != -1337)
+                            {
+                                print("Фильм не был найден");
+                            }
+                        }
+                    }
+                    case 3:
+                    {
+                        int j;
+                        int x;
+                        cinx(j, "Введите ID фильма, который нужно изменить:");
+                        for (auto it = films.begin(); it < films.end(); it++)
+                            {
+                                if ((*it).id == j)
+                                {
+
+                                    print("Фильм который вы хотите изменить:");
+                                    (*it).show();
+                                    for (;;)
+                                    {
+                                        cinx(x, "Выберите свойства для его замены:", 6, "Название фильма",
+                                         "Название студии", "Продюсеры", "Операторы", "Жанры", "Актеры");
+                                        if (x==0)
+                                        break;
+                                        if (x==1){
+
+                                        }if (x==2){
+                                            
+                                        }if (x==3){
+                                            
+                                        }if (x==4){
+                                            
+                                        }if (x==5){
+                                            
+                                        }if (x==6){
+                                            
+                                        }
+                                    }
+                                    
+                                    break;
+                                }
+                            }
+                    }
                     default:
                         break;
                     }
@@ -985,11 +1063,8 @@ int main()
         }
 
         default:
-
+            set_all(cinemas, films, repertoires);
             return 0;
         }
     }
-
-    getchar();
-    return 0;
 }
