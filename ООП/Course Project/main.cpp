@@ -8,6 +8,8 @@
 #include <unordered_map>
 #include <map>
 #include <variant>
+#include <cctype>
+#include <algorithm>
 
 #define ctoi(j) atoi(string({j[0]}).c_str())
 using namespace std;
@@ -16,6 +18,23 @@ class Cinema;
 class Film;
 class Repertoire;
 
+string low(string s)
+{
+    for (size_t i = 0; i < s.size(); i++)
+        s[i] = tolower(s[i], locale("ru"));
+
+    return s;
+}
+vector<string> low(vector<string> x)
+{
+    for (string &s : x)
+        for (size_t i = 0; i < s.size(); i++)
+            s[i] = tolower(s[i], locale("ru"));
+
+    for (string &s : x)
+        cout << s << endl;
+    return x;
+}
 void reverseStr(string &str)
 {
     int n = str.length();
@@ -35,22 +54,28 @@ vector<string> e_parse(string str)
         word = "";
         while (str[i] != ',' && i < str.size())
         {
+            // cout << "1 " << str[i] << endl;
             word += str[i];
             i++;
         }
         j = 0;
+        // cout << "1.5 " << word[j] << endl;
         if (word[j] == ' ')
+        {
             for (j = 0; j < word.size(); j++)
             {
+                // cout << "2 " << word[j] << endl;
                 if (word[j] != ' ')
                 {
                     j += word.size();
                 }
             };
-
-        word = word.substr(j - word.size() - 1);
+            // cout << "2.5 " << word[j] << endl;
+            word = word.substr(j - word.size() - 1);
+        }
         for (j = 0; j < word.size(); j++)
         {
+            // cout << "3 " << word[j] << endl;
             if (word[j] == ' ')
             {
                 break;
@@ -58,6 +83,7 @@ vector<string> e_parse(string str)
         };
         for (y = j; y < word.size(); y++)
         {
+            // cout << "4 " << word[y] << endl;
             if (word[y] != ' ')
             {
                 break;
@@ -67,18 +93,25 @@ vector<string> e_parse(string str)
 
         reverseStr(word);
         j = 0;
-        for (j = 0; j < word.size(); j++)
+        // cout << "3.5 " << word[j] << endl;
+        if (word[j] == ' ')
         {
-            if (word[j] != ' ')
+            for (j = 0; j < word.size(); j++)
             {
-                j += word.size();
-            }
+                // cout << "2 " << word[j] << endl;
+                if (word[j] != ' ')
+                {
+                    j += word.size();
+                }
+            };
+            // cout << "2.5 " << word[j] << endl;
+            word = word.substr(j - word.size() - 1);
         }
-        word = word.substr(j - word.size() - 1);
         reverseStr(word);
         a.push_back(word);
         i++;
     }
+    // for(string b:a)cout<<b<<endl;
     return a;
 }
 void get_films(vector<Film> &films);
@@ -294,7 +327,7 @@ private:
     // id <name> <studio> <producers> <opers> <genres> <actors>
     // <.. , .. , ..>
 public:
-    int id;
+    int id = 0;
     string name, studio;
     vector<string> producers;
     vector<string> opers;
@@ -351,6 +384,84 @@ public:
         print("Успех");
     }
 
+    void find()
+    {
+        vector<Film> films;
+        get_films(films);
+        cout<<-1114213;
+        if (id)
+        {
+            for (Film a : films)
+            {
+                if (id == a.id)
+                    a.show();
+            }
+        }
+        if (!name.empty())
+        {
+            for (Film a : films)
+            {
+                if (low(name) == low(a.name))
+                    a.show();
+            }
+        }
+        if (!studio.empty())
+        {
+            for (Film a : films)
+            {
+                if (low(studio) == low(a.studio))
+                    a.show();
+            }
+        }
+        if (!producers.empty())
+        {
+            for (Film a : films)
+            {
+                 for (string &x : producers)
+                {
+                    for (string &y : a.producers)
+                        if (low(x) == low(y))
+                            a.show();
+                }
+            }
+        }
+        if (!opers.empty())
+        {
+            for (Film a : films)
+            {
+                 for (string &x : opers)
+                {
+                    for (string &y : a.opers)
+                        if (low(x) == low(y))
+                            a.show();
+                }
+            }
+        }
+        if (!genres.empty())
+        {
+            for (Film a : films)
+            {
+                for (string &x : genres)
+                {
+                    for (string &y : a.genres)
+                        if (low(x) == low(y))
+                            a.show();
+                }
+            }
+        }
+        if (!actors.empty())
+        {
+            for (Film a : films)
+            {
+                for (string &x : actors)
+                {
+                    for (string &y : a.actors)
+                        if (low(x) == low(y))
+                            a.show();
+                }
+            }
+        }
+    }
     void show()
     {
         cout << "ID : " << id << ". Название : " << name << ". Жанр(ы) : " << unvector(genres)
@@ -430,7 +541,7 @@ int main()
 {
     system("chcp 1251");
     cls();
-    // e_parse("Антонио Ваден,Вильдоний Гласен,Чиндер Смыр ");
+    e_parse(" Антонио Ваден,Вильдоний Гласен,Чиндер Смыр ");
     int x, y;
 
     vector<Film> films;
@@ -561,52 +672,71 @@ int main()
                 {
                     string j;
                     Film a(0);
-                    map<char, string> dict_s;
-                    map<char, vector<string>> dict_ss;
-                    
-                    dict_s['2'] = a.name;
-                    dict_s['3'] = a.studio;
-                    dict_ss['4'] = a.producers;
-                    dict_ss['5'] = a.opers;
-                    dict_ss['6'] = a.genres;
-                    dict_ss['7'] = a.actors;
 
-                    cinx(j, "Установите нужные вам значения некоторым свойствам,"
-                            " прописав цифру свойства и значение через пробел (несколько значений - через запятую),"
-                            " например: 2 Человек-паук; или clear для очистки свойства: 2 clear",
-                         8, "ID",
-                         "Название фильма", "Название студии", "Продюсеры", "Операторы", "Жанры", "Актеры", "ПОИСК");
-                    for (;;)
+                    cinx(j, "Выберите свойство, которое вы введете, и по которому будет происходить поиск:",
+                         7, "ID",
+                         "Название фильма", "Название студии", "Продюсеры", "Операторы", "Жанры", "Актеры");
+
+                    getline(cin, j);
+                    while ((ctoi(j) < 0) || (ctoi(j) > 7)) //|| ((j[1] != ' ') && (j[0] != '7')))
                     {
+                        cout << "Неверное значение (введите цифру от 1 до " << 7 << ")" << endl;
                         getline(cin, j);
-                        while ((ctoi(j) < 0) || (ctoi(j) > 8) || ((j[1] != ' ') && (j[0] == '8')))
-                        {
-                            cout << "Неверное значение (введите цифру от 1 до " << 8 << " и команду)" << endl;
-                            getline(cin, j);
-                        }
-                        cout << j << endl
-                             << "\t" << ctoi(j) << endl;
-                        if (ctoi(j) > 3)
-                        {
-                            for (string &a : e_parse(j.substr(2)))
-                            {
-                                cout << a << endl;
-                            }
-                            dict_ss[j[0]] = (e_parse(j.substr(2)));
-                        }
-                        else if (j[0] == '1')
-                            a.id = ctoi(j.substr(2));
-                        else
-                        {
-                            cout << j.substr(2) << endl;
-                            dict_s[j[0]] = (j.substr(2));
-                        }
-                        if (j[0] == '8')
-                            break;
-                        cout << j << endl
-                             << "\t" << ctoi(j) << endl;
                     }
+                    // cout << j << endl
+                    //      << "\t" << ctoi(j) << endl;
+
+                    if (j[0] == '1')
+                    {
+                        print("Введите ID:");
+                        cin >> a.id;
+                    }
+
+                    if (ctoi(j) == 2)
+                    {
+                        print("Введите Название фильма:");
+                        getline(cin, a.name);
+                    }
+
+                    if (ctoi(j) == 3)
+                    {
+                        print("Введите Название студии:");
+                        getline(cin, a.studio);
+                    }
+
+                    if (ctoi(j) == 4)
+                    {
+                        print("Введите продюсеров через запятую:");
+                        getline(cin, j);
+
+                        a.producers = (e_parse(j));
+                    }
+                    if (ctoi(j) == 5)
+                    {
+                        print("Введите операторов через запятую:");
+                        getline(cin, j);
+                        a.opers = (e_parse(j));
+                    }
+                    if (ctoi(j) == 6)
+                    {
+                        print("Введите жанры через запятую:");
+                        getline(cin, j);
+                        a.genres = (e_parse(j));
+                    }
+                    if (ctoi(j) == 7)
+                    {
+                        print("Введите актеров через запятую:");
+                        getline(cin, j);
+                        a.actors = (e_parse(j));
+                    }
+
+                    // cout << j << endl;
+                    // cout << j.substr(2) << endl
+                    //      << "\t" << ctoi(j) << endl;
+
+                    cout << -1;
                     a.show();
+                    a.find();
                     getchar();
 
                     //int id, int places, int halls, string name,
