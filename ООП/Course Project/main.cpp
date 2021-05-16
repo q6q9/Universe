@@ -3,13 +3,7 @@
 #include <stdarg.h>
 #include <fstream>
 #include <string>
-#include <numeric>
 #include <regex>
-#include <unordered_map>
-#include <map>
-#include <variant>
-#include <cctype>
-#include <algorithm>
 
 #define ctoi(j) atoi(string({j[0]}).c_str())
 using namespace std;
@@ -18,13 +12,27 @@ class Cinema;
 class Film;
 class Repertoire;
 
+void to_lower(char *c)
+{
+    if (*c >= 'A' && *c <= 'Z')
+    {
+        *c = *c + 'a' - 'A';
+    }
+    if (*c >= 'А' && *c <= 'Я')
+    {
+        *c = *c + 'a' - 'A';
+    }
+}
+
 string low(string s)
 {
     for (size_t i = 0; i < s.size(); i++)
-        s[i] = tolower(s[i], locale("ru"));
-
+    {
+        to_lower(&s[i]);
+    }
     return s;
 }
+
 vector<string> low(vector<string> x)
 {
     for (string &s : x)
@@ -387,14 +395,19 @@ public:
     void find()
     {
         vector<Film> films;
+        vector<Film> films_;
         get_films(films);
-        cout<<-1114213;
+        // cout << -1114213;
+
         if (id)
         {
             for (Film a : films)
             {
                 if (id == a.id)
+                {   
+                    search(f)
                     a.show();
+                }
             }
         }
         if (!name.empty())
@@ -417,11 +430,14 @@ public:
         {
             for (Film a : films)
             {
-                 for (string &x : producers)
+                for (string &x : producers)
                 {
                     for (string &y : a.producers)
+                    {
+                        // cout << low(x) << "==" << low(y) << endl;
                         if (low(x) == low(y))
                             a.show();
+                    }
                 }
             }
         }
@@ -429,11 +445,14 @@ public:
         {
             for (Film a : films)
             {
-                 for (string &x : opers)
+                for (string &x : opers)
                 {
                     for (string &y : a.opers)
+                    {
+                        // cout << low(x) << "==" << low(y) << endl;
                         if (low(x) == low(y))
                             a.show();
+                    }
                 }
             }
         }
@@ -444,8 +463,11 @@ public:
                 for (string &x : genres)
                 {
                     for (string &y : a.genres)
+                    {
+                        // cout << low(x) << "==" << low(y) << endl;
                         if (low(x) == low(y))
                             a.show();
+                    }
                 }
             }
         }
@@ -456,8 +478,11 @@ public:
                 for (string &x : actors)
                 {
                     for (string &y : a.actors)
+                    {
+                        // cout << low(x) << "==" << low(y) << endl;
                         if (low(x) == low(y))
                             a.show();
+                    }
                 }
             }
         }
@@ -541,6 +566,7 @@ int main()
 {
     system("chcp 1251");
     cls();
+    cout << low("Привет мир");
     e_parse(" Антонио Ваден,Вильдоний Гласен,Чиндер Смыр ");
     int x, y;
 
@@ -685,6 +711,10 @@ int main()
                     }
                     // cout << j << endl
                     //      << "\t" << ctoi(j) << endl;
+                    if (j[0] == '0')
+                    {
+                        break;
+                    }
 
                     if (j[0] == '1')
                     {
