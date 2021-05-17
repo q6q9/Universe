@@ -17,6 +17,10 @@ class Cinema;
 class Film;
 class Repertoire;
 
+vector<Film> films;
+vector<Cinema> cinemas;
+vector<Repertoire> repertoires;
+
 void to_lower(char *c)
 {
     if (*c >= 'A' && *c <= 'Z')
@@ -28,7 +32,6 @@ void to_lower(char *c)
         *c = *c + 'a' - 'A';
     }
 }
-
 string low(string s)
 {
     for (size_t i = 0; i < s.size(); i++)
@@ -37,7 +40,6 @@ string low(string s)
     }
     return s;
 }
-
 vector<string> low(vector<string> x)
 {
     for (string &s : x)
@@ -210,8 +212,7 @@ void push_line(string &str) //ввод не пустых строк
             if (str[i] != ' ')
                 a += str[i];
         }
-        str = a;
-        if (str == "")
+        if (a == "")
             print("Err: empty line");
         else
             return;
@@ -243,9 +244,9 @@ void push_vector(vector<string> &a)
             if (b[i] != ' ')
                 x += b[i];
         }
-        b = x;
+
         // cout << "_" << b << "_" << endl;
-        if (b == "")
+        if (x == "")
         {
             print("Err: empty line");
             continue;
@@ -297,10 +298,12 @@ private:
 
 public:
     int id, price, free_places;
-    string date;
-    Film *film;
+    string date; //01.07.2021
+    Film *film; 
     Repertoire(int id, int price, int free_places,
                string date, Film *film);
+    Repertoire(Repertoire &a):Repertoire(a.id, a.price, a.free_places, a.date, a.film){}
+    
     ~Repertoire();
 };
 
@@ -351,7 +354,7 @@ private:
     // id <name> <studio> <producers> <opers> <genres> <actors>
     // <.. , .. , ..>
 public:
-    int id = 0;
+    int id;
     string name, studio;
     vector<string> producers;
     vector<string> opers;
@@ -373,9 +376,9 @@ public:
     {
         id = 1;
         bool z = false;
-        vector<Film> films;
-        get_films(films);
-        vector<int> ids(films.size());
+        // vector<Film> films;
+        // get_films(films);
+        // vector<int> ids(films.size());
         for (;;)
         {
             z = false;
@@ -410,9 +413,9 @@ public:
 
     void find()
     {
-        vector<Film> films;
+        // vector<Film> films;
         vector<Film> _films;
-        get_films(films);
+        // get_films(films);
         // cout << -1114213;
 
         if (id)
@@ -429,6 +432,7 @@ public:
                         _films.push_back(a);
                 }
             }
+            cc();
         }
         if (!name.empty())
         {
@@ -510,11 +514,9 @@ public:
                 {
                     for (string &y : a.genres)
                     {
-                        // cout << low(x) << "==" << low(y) << endl;
                         if (low(x) == low(y))
                         {
-
-                            if (!binary_search(_films.begin(), _films.end(), a))
+                            if (!(binary_search(_films.begin(), _films.end(), a)))
                             {
                                 a.show();
                                 _films.push_back(a);
@@ -532,7 +534,6 @@ public:
                 {
                     for (string &y : a.actors)
                     {
-                        // cout << low(x) << "==" << low(y) << endl;
                         if (low(x) == low(y))
                         {
                             if (!binary_search(_films.begin(), _films.end(), a))
@@ -545,8 +546,9 @@ public:
                 }
             }
         }
-
+        _films.clear();
         print("Введите для продолжения:");
+
         getchar();
         cls();
     }
@@ -576,11 +578,14 @@ public:
 
     bool operator<(const Film &a) const
     {
-        if ((id == a.id) && (name == a.name) && (studio == a.studio) &&
-            (producers == a.producers) && (opers == a.opers) &&
-            (genres == a.genres) && (actors == a.actors))
-            return true;
-        return false;
+        // cout <<"\t"<< this->id<<"_"<<a.id<<"\n_______"<< ((this->id == a.id) && (this->name == a.name) && (this->studio == a.studio) &&
+        //     (this->producers == a.producers) && (this->opers == a.opers) &&
+        //(this->genres == a.genres) && (this->actors == a.actors)) <<endl;
+        if ((this->id == a.id) && (this->name == a.name) && (this->studio == a.studio) &&
+            (this->producers == a.producers) && (this->opers == a.opers) &&
+            (this->genres == a.genres) && (this->actors == a.actors))
+            return false;
+        return true;
     }
 };
 
@@ -615,7 +620,7 @@ Film::Film(int id, string name, string studio,
 Film::~Film()
 {
 }
-void get_films(vector<Film> &films)
+void get_films()
 {
     films.clear();
     string line;
@@ -629,14 +634,26 @@ void get_films(vector<Film> &films)
         }
     }
 }
-void get_all(vector<Cinema> &cinemas, vector<Film> &films, vector<Repertoire> &repertoires)
+void get_all(/*vector<Cinema> &cinemas, vector<Film> &films, vector<Repertoire> &repertoires*/) //выгрузка данных
 {
-    get_films(films);
+    get_films();
     print("Соединение проозшоло успешно");
 }
-void set_all(vector<Cinema> &cinemas, vector<Film> &films, vector<Repertoire> &repertoires)
+void set_all(/*vector<Cinema> &cinemas, vector<Film> &films, vector<Repertoire> &repertoires*/) //сохранение данных
 {
+    ofstream out;              // поток для записи
+    out.open("data/films.db"); // окрываем файл для записи
+    out.close();
+    out.open("data/films.db");
 
+    if (out.is_open())
+    {
+        for (Film &a : films)
+        {
+            a.save();
+        }
+        out.close();
+    }
     print("Соединение проозшоло успешно");
 }
 
@@ -646,14 +663,17 @@ int main()
     engine.seed(std::time(nullptr));
     system("chcp 1251");
     cls();
-    cout << low("Привет мир");
-    e_parse(" Антонио Ваден,Вильдоний Гласен,Чиндер Смыр ");
+
+    //cout << low("Привет мир");
+    //e_parse(" Антонио Ваден,Вильдоний Гласен,Чиндер Смыр ");
     int x, y;
 
-    vector<Film> films;
-    vector<Cinema> cinemas;
-    vector<Repertoire> repertoires;
-    get_all(cinemas, films, repertoires);
+    get_all();
+
+    // for (Film &x : films)
+    // {
+    //     x.show();
+    // }
     for (;;)
     {
         print("Для СОХРАНЕНИЯ ИЗМЕНЕНИЙ выходите из программы с помощью меню!");
@@ -721,7 +741,7 @@ int main()
                 }
                 default:
                 {
-                    cout << -12356889;
+                    //cout << -12356889;
                     break;
                 }
                 }
@@ -734,8 +754,6 @@ int main()
         {
             for (;;)
             {
-
-                print("Нажата 1");
                 cinx(x, "Выберите действие:", 4, "Отобразить текущие фильмы", "Отобразить сведения фильма по ключу",
                      "Поиск фильма", "Редактирование фильмов");
                 switch (x)
@@ -743,12 +761,12 @@ int main()
                 case 1:
                 {
                     print("Список текущих фильмов:");
-                    get_films(films);
                     for (Film &a : films)
                         a.show();
                     //cout << "ID : " << a.id << ". Название : " << a.name << ". Жанр : " << unvector(a.genres) << "." << endl;
                     print("Введите для продолжения");
                     getchar();
+                    cls();
                     break;
                 }
                 case 2:
@@ -757,18 +775,31 @@ int main()
                     print("Введите ключ нужного вам фильма или -1 для выхода");
                     r_cin(j);
                     if (j == -1)
+                    {
+                        cls();
                         break;
+                    }
                     for (Film &a : films)
                     {
                         if (j == a.id)
                         {
                             a.show();
+                            print("Введите для продолжения:");
+                            cc();
+                            getchar();
+                            cls();
                             j = -1;
                         }
                     }
 
                     if (j != -1)
+                    {
                         print("Фильма с данным ключом не существует");
+                        print("Введите для продолжения:");
+                        cc();
+                        getchar();
+                        cls();
+                    }
                     break;
                     //case 4:
                     // print("Нажата 4");
@@ -776,78 +807,84 @@ int main()
                 }
                 case 3:
                 {
-                    string j;
+                    int j;
+                    string b;
                     Film a(0);
 
                     cinx(j, "Выберите свойство, которое вы введете, и по которому будет происходить поиск:",
                          7, "ID",
                          "Название фильма", "Название студии", "Продюсеры", "Операторы", "Жанры", "Актеры");
 
-                    getline(cin, j);
-                    while ((ctoi(j) < 0) || (ctoi(j) > 7)) //|| ((j[1] != ' ') && (j[0] != '7')))
-                    {
-                        cout << "Неверное значение (введите цифру от 1 до " << 7 << ")" << endl;
-                        getline(cin, j);
-                    }
+                    // getline(cin, j);
+                    // while ((ctoi(j) < 0) || (ctoi(j) > 7)) //|| ((j[1] != ' ') && (j[0] != '7')))
+                    // {
+                    //     cout << "Неверное значение (введите цифру от 1 до " << 7 << ")" << endl;
+                    //     getline(cin, j);
+                    // }
                     // cout << j << endl
                     //      << "\t" << ctoi(j) << endl;
-                    if (j[0] == '0')
+                    if (j == 0)
                     {
+                        cls();
                         break;
                     }
 
-                    if (j[0] == '1')
+                    if (j == 1)
                     {
                         print("Введите ID:");
                         cin >> a.id;
                     }
 
-                    if (ctoi(j) == 2)
+                    if (j == 2)
                     {
                         print("Введите Название фильма:");
                         getline(cin, a.name);
                     }
 
-                    if (ctoi(j) == 3)
+                    if (j == 3)
                     {
                         print("Введите Название студии:");
                         getline(cin, a.studio);
                     }
 
-                    if (ctoi(j) == 4)
+                    if (j == 4)
                     {
                         print("Введите продюсеров через запятую:");
-                        getline(cin, j);
+                        getline(cin, b);
 
-                        a.producers = (e_parse(j));
+                        a.producers = (e_parse(b));
                     }
-                    if (ctoi(j) == 5)
+                    if (j == 5)
                     {
                         print("Введите операторов через запятую:");
-                        getline(cin, j);
-                        a.opers = (e_parse(j));
+                        getline(cin, b);
+                        a.opers = (e_parse(b));
                     }
-                    if (ctoi(j) == 6)
+                    if (j == 6)
                     {
                         print("Введите жанры через запятую:");
-                        getline(cin, j);
-                        a.genres = (e_parse(j));
+                        getline(cin, b);
+                        a.genres = (e_parse(b));
                     }
-                    if (ctoi(j) == 7)
+                    if (j == 7)
                     {
                         print("Введите актеров через запятую:");
-                        getline(cin, j);
-                        a.actors = (e_parse(j));
+                        getline(cin, b);
+                        a.actors = (e_parse(b));
                     }
 
                     // cout << j << endl;
                     // cout << j.substr(2) << endl
                     //      << "\t" << ctoi(j) << endl;
 
-                    cout << -1;
-                    a.show();
+                    // cout << -1;
+                    // a.show();
+                    cout << endl;
                     a.find();
-
+                    // print("Введите для продолжения:");
+                    // cc();
+                    // getchar();
+                    // cls();
                     //int id, int places, int halls, string name,
                     //string address, string category, bool state
                     // int j;
@@ -899,6 +936,9 @@ int main()
                         films.push_back(Film());
                         //films[films.size() - 1].save(); //
                         print("Успешно добавлен");
+                        print("Введите для продолжения:");
+                        getchar();
+                        cls();
                         break;
                     }
                     case 2:
@@ -909,6 +949,7 @@ int main()
                             int x = rand(10);
                             cinx(j, "Введите ключ фильма, который вы хотите удалить или -1 для выхода:");
                             if (j == -1)
+                                cls();
                                 break;
 
                             for (auto it = films.begin(); it < films.end(); it++)
@@ -939,43 +980,75 @@ int main()
                                 print("Фильм не был найден");
                             }
                         }
+
+                        break;
                     }
                     case 3:
                     {
                         int j;
                         int x;
                         cinx(j, "Введите ID фильма, который нужно изменить:");
-                        for (auto it = films.begin(); it < films.end(); it++)
+                        for (size_t i = 0; i < films.size(); i++)
+                        {
                             {
-                                if ((*it).id == j)
+                                if (films[i].id == j)
                                 {
-
                                     print("Фильм который вы хотите изменить:");
-                                    (*it).show();
+                                    films[i].show();
                                     for (;;)
                                     {
                                         cinx(x, "Выберите свойства для его замены:", 6, "Название фильма",
-                                         "Название студии", "Продюсеры", "Операторы", "Жанры", "Актеры");
-                                        if (x==0)
-                                        break;
-                                        if (x==1){
-
-                                        }if (x==2){
-                                            
-                                        }if (x==3){
-                                            
-                                        }if (x==4){
-                                            
-                                        }if (x==5){
-                                            
-                                        }if (x==6){
-                                            
+                                             "Название студии", "Продюсеры", "Операторы", "Жанры", "Актеры");
+                                        if (x == 0)
+                                            break;
+                                        if (x == 1)
+                                        {
+                                            print("Введите название:");
+                                            films[i].name.clear();
+                                            push_line(films[i].name);
                                         }
+                                        if (x == 2)
+                                        {
+                                            print("Введите название киностудии");
+                                            films[i].studio.clear();
+                                            push_line(films[i].studio);
+                                        }
+                                        if (x == 3)
+                                        {
+                                            print("Введите продюсеров через Enter (-1 для прекращения ввода)");
+                                            films[i].producers.clear();
+                                            push_vector(films[i].producers);
+                                        }
+                                        if (x == 4)
+                                        {
+                                            print("Введите операторов через Enter (-1 для прекращения ввода)");
+                                            films[i].opers.clear();
+                                            push_vector(films[i].opers);
+                                        }
+                                        if (x == 5)
+                                        {
+                                            print("Введите жанры ерез Enter (-1 для прекращения ввода)");
+                                            films[i].genres.clear();
+                                            push_vector(films[i].genres);
+                                        }
+                                        if (x == 6)
+                                        {
+                                            print("Введите актеров ерез Enter (-1 для прекращения ввода)");
+                                            films[i].actors.clear();
+                                            push_vector(films[i].actors);
+                                        }
+                                        print("Успех");
                                     }
-                                    
+                                    print("Измененный фильм:");
+                                    films[i].show();
+                                    cc();
+                                    print("Введите для продолжения");
+                                    getchar();
+                                    cls();
                                     break;
                                 }
                             }
+                        }
                     }
                     default:
                         break;
@@ -985,7 +1058,7 @@ int main()
                 }
                 default:
                 {
-                    cout << -12356889;
+                    // cout << -12356889;
                     break;
                 }
                 }
@@ -1063,7 +1136,7 @@ int main()
         }
 
         default:
-            set_all(cinemas, films, repertoires);
+            set_all();
             return 0;
         }
     }
