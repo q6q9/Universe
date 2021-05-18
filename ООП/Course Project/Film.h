@@ -1,6 +1,6 @@
 #ifndef Film_h
 #define Film_h
-
+#include "Film.cpp"
 #include <iostream>
 #include <vector>
 using namespace std;

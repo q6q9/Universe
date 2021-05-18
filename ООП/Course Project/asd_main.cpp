@@ -9,6 +9,7 @@
 #include <ctime>
 #include <random>
 
+
 #define d(a) a[0] << a[1] << "." << a[2] << a[3] << "." << a.substr(4, 4)
 #define rand(x) engine() % x
 #define ctoi(j) atoi(string({j[0]}).c_str())
@@ -17,10 +18,16 @@ using namespace std;
 class Cinema;
 class Film;
 class Repertoire;
+
 vector<Film> films;
 vector<Cinema> cinemas;
 vector<Repertoire> repertoires;
-void cc();
+
+void cc() //очистка потока ввода
+{
+    cin.clear();
+    cin.ignore(32767, '\n');
+}
 void print(string text) { cout << text << endl; } //вывод текста
 void r_cin(int &j)
 {
@@ -160,11 +167,6 @@ void menu(int i, ...)                  //контекстное меню
     for (size_t j = 0; j <= i; j++)
         printf("[%d] - %s\n", j, (j ? va_arg(t, char *) : "Вернуться (выход)"));
 }
-void cc() //очистка потока ввода
-{
-    cin.clear();
-    cin.ignore(32767, '\n');
-}
 void cinx(int &x, string text, int i, ...) //ввод x
 {
 
@@ -235,7 +237,7 @@ string str(vector<string> &b) //"<%s>",b[]
     string a = "<";
     for (string &x : b)
         a += "'" + x + "'";
-
+    
     return a + ">";
 }
 string str(string &b) //"<%s>",b
@@ -1195,7 +1197,7 @@ int main()
     {
         print("Для СОХРАНЕНИЯ ИЗМЕНЕНИЙ выходите из программы с помощью меню!");
         cinx(y, "Выберите область, с которой вы будете работать:", 3, "Кинотеатры", "Фильмы", "Репертуары");
-
+        
         switch (y)
         {
         case 1:
