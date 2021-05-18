@@ -342,7 +342,7 @@ void get_all(/*vector<Cinema> &cinemas, vector<Film> &films, vector<Repertoire> 
     get_films();
     get_repertoires();
     get_cinemas();
-    print("Соединение проозшоло успешно");
+    print("Данные успешно были загружены");
 }
 void set_all(/*vector<Cinema> &cinemas, vector<Film> &films, vector<Repertoire> &repertoires*/) //сохранение данных
 {

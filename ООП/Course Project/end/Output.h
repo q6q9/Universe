@@ -6,8 +6,10 @@ class Output
 {
 public:
     std::string out;
-    Output(std::string &a);
+    Output(std::string const a);
+    Output();
     ~Output();
-    void put();
+    void put(std::string a);
+    void print();
 };
 #endif

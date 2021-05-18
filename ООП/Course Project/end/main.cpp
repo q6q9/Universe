@@ -14,7 +14,6 @@
 #include "Cinema.h"
 #include "Repertoire.h"
 #include "funcs.h"
-
 #define d(a) a[0] << a[1] << "." << a[2] << a[3] << "." << a.substr(4, 4)
 #define rand(x) engine() % x
 #define ctoi(j) atoi(string({j[0]}).c_str())
@@ -30,15 +29,13 @@ int main()
     engine.seed(std::time(nullptr));
     system("chcp 1251");
     cls();
-
+    Output out;
     int x, y;
     get_all();
-    getchar();
     for (;;)
     {
-        print("Для СОХРАНЕНИЯ ИЗМЕНЕНИЙ выходите из программы с помощью меню!");
+        out.put("Для СОХРАНЕНИЯ ИЗМЕНЕНИЙ выходите из программы с помощью меню!");
         cinx(y, "Выберите область, с которой вы будете работать:", 3, "Кинотеатры", "Фильмы", "Репертуары");
-
         switch (y)
         {
         case 1:
@@ -46,17 +43,17 @@ int main()
             for (;;)
             {
 
-                print("Нажата 1");
+                out.put("Нажата 1");
                 cinx(x, "Выберите действие:", 4, "Отобразить текущие кинотеатры", "Отобразить сведения кинотеатра по ключу",
                      "Поиск кинотеатров", "Редактирование кинотеатров");
                 switch (x)
                 {
                 case 1:
                 {
-                    print("Список текущих кинотетров:");
+                    out.put("Список текущих кинотетров:");
                     for (Cinema &a : cinemas)
                         a.show();
-                    print("Введите для продолжения");
+                    out.put("Введите для продолжения");
                     getchar();
                     cls();
                     break;
@@ -64,7 +61,7 @@ int main()
                 case 2:
                 {
                     int j;
-                    print("Введите ключ нужного вам кинотеатра или -1 для выхода");
+                    out.put("Введите ключ нужного вам кинотеатра или -1 для выхода");
                     r_cin(j);
                     if (j == -1)
                     {
@@ -76,7 +73,7 @@ int main()
                         if (j == a.id)
                         {
                             a.show();
-                            print("Введите для продолжения:");
+                            out.put("Введите для продолжения:");
                             cc();
                             getchar();
                             cls();
@@ -86,8 +83,8 @@ int main()
 
                     if (j != -1)
                     {
-                        print("Кинотеатра с данным ключом не существует");
-                        print("Введите для продолжения:");
+                        out.put("Кинотеатра с данным ключом не существует");
+                        out.put("Введите для продолжения:");
                         cc();
                         getchar();
                         cls();
@@ -111,48 +108,48 @@ int main()
 
                     if (j == 1)
                     {
-                        print("Введите ID:");
+                        out.put("Введите ID:");
                         r_cin(a.id);
                     }
 
                     if (j == 2)
                     {
 
-                        print("Введите название кинотеатра:");
+                        out.put("Введите название кинотеатра:");
 
                         push_line(a.name);
                     }
 
                     if (j == 3)
                     {
-                        print("Введите кол-во залов:");
+                        out.put("Введите кол-во залов:");
                         r_cin(a.halls);
                     }
 
                     if (j == 4)
                     {
-                        print("Введите кол-во мест");
+                        out.put("Введите кол-во мест");
                         r_cin(a.places);
                     }
                     if (j == 5)
                     {
-                        print("Введите адрес:");
+                        out.put("Введите адрес:");
                         push_line(a.address);
                     }
                     if (j == 6)
                     {
-                        print("Введите категорию:");
+                        out.put("Введите категорию:");
                         push_line(a.category);
                     }
                     if (j == 7)
                     {
-                        print("Введите состояние:");
+                        out.put("Введите состояние:");
                         r_cin(i);
                         a.state = (i == 1);
                     }
                     if (j == 8)
                     {
-                        print("Введите ID репертуаров через Enter или -1 для выхода:");
+                        out.put("Введите ID репертуаров через Enter или -1 для выхода:");
                         push_vector(a.reps);
                     }
                     cout << endl;
@@ -163,7 +160,7 @@ int main()
 
                 case 4:
                 {
-                    print("Нажата 4");
+                    out.put("Нажата 4");
                     cinx(x, "Выберите действие:", 3, "Добавить кинотеатр", "Удалить кинотеатр", "Изменить кинотеатр");
 
                     switch (x)
@@ -171,8 +168,8 @@ int main()
                     case 1:
                     {
                         cinemas.push_back(Cinema());
-                        print("Успешно добавлен");
-                        print("Введите для продолжения:");
+                        out.put("Успешно добавлен");
+                        out.put("Введите для продолжения:");
                         getchar();
                         cls();
                         break;
@@ -196,19 +193,19 @@ int main()
                                 if ((*it).id == j)
                                 {
 
-                                    print("Фильм который вы хотите удалить:");
+                                    out.put("Фильм который вы хотите удалить:");
                                     (*it).show();
                                     cout << "Для подтверждения удаления введите " << x << " :";
                                     cinx(j, "");
                                     if (j == x)
                                     {
                                         films.erase(it);
-                                        print("Успех");
+                                        out.put("Успех");
                                         j = -1337;
                                     }
                                     else
                                     {
-                                        print("Отмена");
+                                        out.put("Отмена");
                                         j = -1337;
                                     }
                                     break;
@@ -216,7 +213,7 @@ int main()
                             }
                             if (j != -1337)
                             {
-                                print("Фильм не был найден");
+                                out.put("Фильм не был найден");
                             }
                         }
 
@@ -232,7 +229,7 @@ int main()
                             {
                                 if (films[i].id == j)
                                 {
-                                    print("Фильм который вы хотите изменить:");
+                                    out.put("Фильм который вы хотите изменить:");
                                     films[i].show();
                                     for (;;)
                                     {
@@ -242,46 +239,46 @@ int main()
                                             break;
                                         if (x == 1)
                                         {
-                                            print("Введите название:");
+                                            out.put("Введите название:");
                                             films[i].name.clear();
                                             push_line(films[i].name);
                                         }
                                         if (x == 2)
                                         {
-                                            print("Введите название киностудии");
+                                            out.put("Введите название киностудии");
                                             films[i].studio.clear();
                                             push_line(films[i].studio);
                                         }
                                         if (x == 3)
                                         {
-                                            print("Введите продюсеров через Enter (-1 для прекращения ввода)");
+                                            out.put("Введите продюсеров через Enter (-1 для прекращения ввода)");
                                             films[i].producers.clear();
                                             push_vector(films[i].producers);
                                         }
                                         if (x == 4)
                                         {
-                                            print("Введите операторов через Enter (-1 для прекращения ввода)");
+                                            out.put("Введите операторов через Enter (-1 для прекращения ввода)");
                                             films[i].opers.clear();
                                             push_vector(films[i].opers);
                                         }
                                         if (x == 5)
                                         {
-                                            print("Введите жанры ерез Enter (-1 для прекращения ввода)");
+                                            out.put("Введите жанры ерез Enter (-1 для прекращения ввода)");
                                             films[i].genres.clear();
                                             push_vector(films[i].genres);
                                         }
                                         if (x == 6)
                                         {
-                                            print("Введите актеров ерез Enter (-1 для прекращения ввода)");
+                                            out.put("Введите актеров ерез Enter (-1 для прекращения ввода)");
                                             films[i].actors.clear();
                                             push_vector(films[i].actors);
                                         }
-                                        print("Успех");
+                                        out.put("Успех");
                                     }
-                                    print("Измененный фильм:");
+                                    out.put("Измененный фильм:");
                                     films[i].show();
                                     cc();
-                                    print("Введите для продолжения");
+                                    out.put("Введите для продолжения");
                                     getchar();
                                     cls();
                                     break;
@@ -316,11 +313,11 @@ int main()
                 {
                 case 1:
                 {
-                    print("Список текущих фильмов:");
+                    out.put("Список текущих фильмов:");
                     for (Film &a : films)
                         a.show();
 
-                    print("Введите для продолжения");
+                    out.put("Введите для продолжения");
                     getchar();
                     cls();
                     break;
@@ -328,7 +325,7 @@ int main()
                 case 2:
                 {
                     int j;
-                    print("Введите ключ нужного вам фильма или -1 для выхода");
+                    out.put("Введите ключ нужного вам фильма или -1 для выхода");
                     r_cin(j);
                     if (j == -1)
                     {
@@ -340,7 +337,7 @@ int main()
                         if (j == a.id)
                         {
                             a.show();
-                            print("Введите для продолжения:");
+                            out.put("Введите для продолжения:");
                             cc();
                             getchar();
                             cls();
@@ -350,8 +347,8 @@ int main()
 
                     if (j != -1)
                     {
-                        print("Фильма с данным ключом не существует");
-                        print("Введите для продолжения:");
+                        out.put("Фильма с данным ключом не существует");
+                        out.put("Введите для продолжения:");
                         cc();
                         getchar();
                         cls();
@@ -375,44 +372,44 @@ int main()
 
                     if (j == 1)
                     {
-                        print("Введите ID:");
+                        out.put("Введите ID:");
                         cin >> a.id;
                     }
 
                     if (j == 2)
                     {
-                        print("Введите Название фильма:");
+                        out.put("Введите Название фильма:");
                         getline(cin, a.name);
                     }
 
                     if (j == 3)
                     {
-                        print("Введите Название студии:");
+                        out.put("Введите Название студии:");
                         getline(cin, a.studio);
                     }
 
                     if (j == 4)
                     {
-                        print("Введите продюсеров через запятую:");
+                        out.put("Введите продюсеров через запятую:");
                         getline(cin, b);
 
                         a.producers = (e_parse(b));
                     }
                     if (j == 5)
                     {
-                        print("Введите операторов через запятую:");
+                        out.put("Введите операторов через запятую:");
                         getline(cin, b);
                         a.opers = (e_parse(b));
                     }
                     if (j == 6)
                     {
-                        print("Введите жанры через запятую:");
+                        out.put("Введите жанры через запятую:");
                         getline(cin, b);
                         a.genres = (e_parse(b));
                     }
                     if (j == 7)
                     {
-                        print("Введите актеров через запятую:");
+                        out.put("Введите актеров через запятую:");
                         getline(cin, b);
                         a.actors = (e_parse(b));
                     }
@@ -424,7 +421,7 @@ int main()
 
                 case 4:
                 {
-                    print("Нажата 4");
+                    out.put("Нажата 4");
                     cinx(x, "Выберите действие:", 3, "Добавить фильм", "Удалить фильм", "Изменить фильм");
 
                     switch (x)
@@ -433,8 +430,8 @@ int main()
                     {
 
                         films.push_back(Film());
-                        print("Успешно добавлен");
-                        print("Введите для продолжения:");
+                        out.put("Успешно добавлен");
+                        out.put("Введите для продолжения:");
                         getchar();
                         cls();
                         break;
@@ -455,19 +452,19 @@ int main()
                                 if ((*it).id == j)
                                 {
 
-                                    print("Фильм который вы хотите удалить:");
+                                    out.put("Фильм который вы хотите удалить:");
                                     (*it).show();
                                     cout << "Для подтверждения удаления введите " << x << " :";
                                     cinx(j, "");
                                     if (j == x)
                                     {
                                         films.erase(it);
-                                        print("Успех");
+                                        out.put("Успех");
                                         j = -1337;
                                     }
                                     else
                                     {
-                                        print("Отмена");
+                                        out.put("Отмена");
                                         j = -1337;
                                     }
                                     break;
@@ -475,7 +472,7 @@ int main()
                             }
                             if (j != -1337)
                             {
-                                print("Фильм не был найден");
+                                out.put("Фильм не был найден");
                             }
                         }
 
@@ -491,7 +488,7 @@ int main()
                             {
                                 if (films[i].id == j)
                                 {
-                                    print("Фильм который вы хотите изменить:");
+                                    out.put("Фильм который вы хотите изменить:");
                                     films[i].show();
                                     for (;;)
                                     {
@@ -501,46 +498,46 @@ int main()
                                             break;
                                         if (x == 1)
                                         {
-                                            print("Введите название:");
+                                            out.put("Введите название:");
                                             films[i].name.clear();
                                             push_line(films[i].name);
                                         }
                                         if (x == 2)
                                         {
-                                            print("Введите название киностудии");
+                                            out.put("Введите название киностудии");
                                             films[i].studio.clear();
                                             push_line(films[i].studio);
                                         }
                                         if (x == 3)
                                         {
-                                            print("Введите продюсеров через Enter (-1 для прекращения ввода)");
+                                            out.put("Введите продюсеров через Enter (-1 для прекращения ввода)");
                                             films[i].producers.clear();
                                             push_vector(films[i].producers);
                                         }
                                         if (x == 4)
                                         {
-                                            print("Введите операторов через Enter (-1 для прекращения ввода)");
+                                            out.put("Введите операторов через Enter (-1 для прекращения ввода)");
                                             films[i].opers.clear();
                                             push_vector(films[i].opers);
                                         }
                                         if (x == 5)
                                         {
-                                            print("Введите жанры ерез Enter (-1 для прекращения ввода)");
+                                            out.put("Введите жанры ерез Enter (-1 для прекращения ввода)");
                                             films[i].genres.clear();
                                             push_vector(films[i].genres);
                                         }
                                         if (x == 6)
                                         {
-                                            print("Введите актеров ерез Enter (-1 для прекращения ввода)");
+                                            out.put("Введите актеров ерез Enter (-1 для прекращения ввода)");
                                             films[i].actors.clear();
                                             push_vector(films[i].actors);
                                         }
-                                        print("Успех");
+                                        out.put("Успех");
                                     }
-                                    print("Измененный фильм:");
+                                    out.put("Измененный фильм:");
                                     films[i].show();
                                     cc();
-                                    print("Введите для продолжения");
+                                    out.put("Введите для продолжения");
                                     getchar();
                                     cls();
                                     break;
@@ -573,11 +570,11 @@ int main()
                 {
                 case 1:
                 {
-                    print("Список текущих репертуаров:");
+                    out.put("Список текущих репертуаров:");
                     for (Repertoire &a : repertoires)
                         a.show();
                     //cout << "ID : " << a.id << ". Название : " << a.name << ". Жанр : " << unvector(a.genres) << "." << endl;
-                    print("Введите для продолжения");
+                    out.put("Введите для продолжения");
                     getchar();
                     cls();
                     break;
@@ -585,7 +582,7 @@ int main()
                 case 2:
                 {
                     int j;
-                    print("Введите ключ нужного вам репертуара или -1 для выхода");
+                    out.put("Введите ключ нужного вам репертуара или -1 для выхода");
                     r_cin(j);
                     if (j == -1)
                     {
@@ -597,7 +594,7 @@ int main()
                         if (j == a.id)
                         {
                             a.show();
-                            print("Введите для продолжения:");
+                            out.put("Введите для продолжения:");
                             cc();
                             getchar();
                             cls();
@@ -607,8 +604,8 @@ int main()
 
                     if (j != -1)
                     {
-                        print("Репертуара с данным ключом не существует");
-                        print("Введите для продолжения:");
+                        out.put("Репертуара с данным ключом не существует");
+                        out.put("Введите для продолжения:");
                         cc();
                         getchar();
                         cls();
@@ -632,14 +629,14 @@ int main()
 
                     if (j == 1)
                     {
-                        print("Введите ID:");
+                        out.put("Введите ID:");
                         cin >> a.id;
                     }
 
                     if (j == 2)
                     {
 
-                        print("Введите ID фильма через Enter или -1:");
+                        out.put("Введите ID фильма через Enter или -1:");
                         while (i != -1)
                         {
                             r_cin(i);
@@ -649,20 +646,20 @@ int main()
 
                     if (j == 3)
                     {
-                        print("Введите дату в формате ДДММГГ (например, 30052021):");
+                        out.put("Введите дату в формате ДДММГГ (например, 30052021):");
                         getline(cin, a.date);
                     }
 
                     if (j == 4)
                     {
-                        print("Введите цену");
+                        out.put("Введите цену");
                         r_cin(i);
 
                         a.price = i;
                     }
                     if (j == 5)
                     {
-                        print("Введите количество свободных мест:");
+                        out.put("Введите количество свободных мест:");
                         r_cin(i);
 
                         a.free_places = i;
@@ -675,7 +672,7 @@ int main()
 
                 case 4:
                 {
-                    print("Нажата 4");
+                    out.put("Нажата 4");
                     cinx(x, "Выберите действие:", 3, "Добавить реперутар", "Удалить реперутар", "Изменить реперутар");
 
                     switch (x)
@@ -685,8 +682,8 @@ int main()
 
                         repertoires.push_back(Repertoire());
                         //films[films.size() - 1].save(); //
-                        print("Успешно добавлен");
-                        print("Введите для продолжения:");
+                        out.put("Успешно добавлен");
+                        out.put("Введите для продолжения:");
                         getchar();
                         cls();
                         break;
@@ -709,19 +706,19 @@ int main()
                                 if ((*it).id == j)
                                 {
 
-                                    print("Репертуар который вы хотите удалить:");
+                                    out.put("Репертуар который вы хотите удалить:");
                                     (*it).show();
                                     cout << "Для подтверждения удаления введите " << x << " :";
                                     cinx(j, "");
                                     if (j == x)
                                     {
                                         repertoires.erase(it);
-                                        print("Успех");
+                                        out.put("Успех");
                                         j = -1337;
                                     }
                                     else
                                     {
-                                        print("Отмена");
+                                        out.put("Отмена");
                                         j = -1337;
                                     }
                                     break;
@@ -729,7 +726,7 @@ int main()
                             }
                             if (j != -1337)
                             {
-                                print("Репертуар не был найден");
+                                out.put("Репертуар не был найден");
                             }
                         }
 
@@ -745,7 +742,7 @@ int main()
                             {
                                 if (repertoires[i].id == j)
                                 {
-                                    print("Репертуар который вы хотите изменить:");
+                                    out.put("Репертуар который вы хотите изменить:");
                                     repertoires[i].show();
                                     for (;;)
                                     {
@@ -755,33 +752,33 @@ int main()
                                             break;
                                         if (x == 1)
                                         {
-                                            print("Введите дату в формате ДДММГГ (например, 30052021):");
+                                            out.put("Введите дату в формате ДДММГГ (например, 30052021):");
                                             repertoires[i].date.clear();
                                             push_line(repertoires[i].date);
                                         }
                                         if (x == 2)
                                         {
-                                            print("Введите ID фильма");
+                                            out.put("Введите ID фильма");
                                             r_cin(j);
                                             repertoires[i].film = repertoires[i].film->search(j);
                                         }
                                         if (x == 3)
                                         {
-                                            print("Введите цену");
+                                            out.put("Введите цену");
                                             r_cin(repertoires[i].price);
                                         }
                                         if (x == 4)
                                         {
-                                            print("Введите кол-во свободных мест");
+                                            out.put("Введите кол-во свободных мест");
                                             r_cin(repertoires[i].free_places);
                                         }
 
-                                        print("Успех");
+                                        out.put("Успех");
                                     }
-                                    print("Измененный репертуар:");
+                                    out.put("Измененный репертуар:");
                                     films[i].show();
                                     cc();
-                                    print("Введите для продолжения");
+                                    out.put("Введите для продолжения");
                                     getchar();
                                     cls();
                                     break;
