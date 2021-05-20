@@ -192,16 +192,7 @@ void cinx(string &x, string text, int i, ...) //ввод x
     va_start(t, i);
     for (size_t j = 0; j <= i; j++)
         printf("[%d] - %s\n", j, (j ? va_arg(t, char *) : "Вернуться (выход)"));
-    // getline(cin, x);
-
-    // while ((ctoi(x) < 0) || (ctoi(x) > i) || (x[1] != ' '))
-    // {
-
-    //     cout << "Неверное значение (введите цифру от 1 до " << i << " и команду)" << endl;
-    //     getline(cin, x);
-    // }
-    // cc();
-    // cls();
+   
 }
 void push_line(string &str) //ввод не пустых строк
 {
