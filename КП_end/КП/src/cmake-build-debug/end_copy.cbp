@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="end_copy"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="C:/Users/User/Desktop/end_copy/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/Users/User/Documents/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/User/Desktop/end_copy/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="C:/Users/User/Documents/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/User/Desktop/end_copy/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/Users/User/Documents/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/User/Desktop/end_copy/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/Users/User/Documents/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/User/Desktop/end_copy/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="end_copy">
+				<Option output="C:/Users/User/Desktop/end_copy/cmake-build-debug/end_copy.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/User/Desktop/end_copy/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="c:\users\user\documents\mingw\bin\../lib/gcc/x86_64-w64-mingw32/9.2.0/../../../../include/c++/9.2.0"/>
+					<Add directory="c:\users\user\documents\mingw\bin\../lib/gcc/x86_64-w64-mingw32/9.2.0/../../../../include/c++/9.2.0/x86_64-w64-mingw32"/>
+					<Add directory="c:\users\user\documents\mingw\bin\../lib/gcc/x86_64-w64-mingw32/9.2.0/../../../../include/c++/9.2.0/backward"/>
+					<Add directory="c:\users\user\documents\mingw\bin\../lib/gcc/x86_64-w64-mingw32/9.2.0/include"/>
+					<Add directory="c:\users\user\documents\mingw\bin\../lib/gcc/x86_64-w64-mingw32/9.2.0/include-fixed"/>
+					<Add directory="c:\users\user\documents\mingw\bin\../lib/gcc/x86_64-w64-mingw32/9.2.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/Users/User/Documents/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/User/Desktop/end_copy/cmake-build-debug/Makefile&quot;  VERBOSE=1 end_copy"/>
+					<CompileFile command="C:/Users/User/Documents/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/User/Desktop/end_copy/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/Users/User/Documents/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/User/Desktop/end_copy/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/Users/User/Documents/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/User/Desktop/end_copy/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="end_copy/fast">
+				<Option output="C:/Users/User/Desktop/end_copy/cmake-build-debug/end_copy.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/User/Desktop/end_copy/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="c:\users\user\documents\mingw\bin\../lib/gcc/x86_64-w64-mingw32/9.2.0/../../../../include/c++/9.2.0"/>
+					<Add directory="c:\users\user\documents\mingw\bin\../lib/gcc/x86_64-w64-mingw32/9.2.0/../../../../include/c++/9.2.0/x86_64-w64-mingw32"/>
+					<Add directory="c:\users\user\documents\mingw\bin\../lib/gcc/x86_64-w64-mingw32/9.2.0/../../../../include/c++/9.2.0/backward"/>
+					<Add directory="c:\users\user\documents\mingw\bin\../lib/gcc/x86_64-w64-mingw32/9.2.0/include"/>
+					<Add directory="c:\users\user\documents\mingw\bin\../lib/gcc/x86_64-w64-mingw32/9.2.0/include-fixed"/>
+					<Add directory="c:\users\user\documents\mingw\bin\../lib/gcc/x86_64-w64-mingw32/9.2.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/Users/User/Documents/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/User/Desktop/end_copy/cmake-build-debug/Makefile&quot;  VERBOSE=1 end_copy/fast"/>
+					<CompileFile command="C:/Users/User/Documents/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/User/Desktop/end_copy/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/Users/User/Documents/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/User/Desktop/end_copy/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/Users/User/Documents/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/User/Desktop/end_copy/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="C:/Users/User/Desktop/end_copy/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/Users/User/Documents/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/User/Desktop/end_copy/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="C:/Users/User/Documents/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/User/Desktop/end_copy/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/Users/User/Documents/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/User/Desktop/end_copy/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/Users/User/Documents/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/User/Desktop/end_copy/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="C:/Users/User/Desktop/end_copy/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/Users/User/Documents/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/User/Desktop/end_copy/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="C:/Users/User/Documents/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/User/Desktop/end_copy/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/Users/User/Documents/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/User/Desktop/end_copy/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/Users/User/Documents/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/User/Desktop/end_copy/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="C:/Users/User/Desktop/end_copy/Cinema.cpp">
+			<Option target="end_copy"/>
+		</Unit>
+		<Unit filename="C:/Users/User/Desktop/end_copy/Cinema.h">
+			<Option target="end_copy"/>
+		</Unit>
+		<Unit filename="C:/Users/User/Desktop/end_copy/Film.cpp">
+			<Option target="end_copy"/>
+		</Unit>
+		<Unit filename="C:/Users/User/Desktop/end_copy/Film.h">
+			<Option target="end_copy"/>
+		</Unit>
+		<Unit filename="C:/Users/User/Desktop/end_copy/Output.cpp">
+			<Option target="end_copy"/>
+		</Unit>
+		<Unit filename="C:/Users/User/Desktop/end_copy/Output.h">
+			<Option target="end_copy"/>
+		</Unit>
+		<Unit filename="C:/Users/User/Desktop/end_copy/Repertoire.cpp">
+			<Option target="end_copy"/>
+		</Unit>
+		<Unit filename="C:/Users/User/Desktop/end_copy/Repertoire.h">
+			<Option target="end_copy"/>
+		</Unit>
+		<Unit filename="C:/Users/User/Desktop/end_copy/funcs.cpp">
+			<Option target="end_copy"/>
+		</Unit>
+		<Unit filename="C:/Users/User/Desktop/end_copy/funcs.h">
+			<Option target="end_copy"/>
+		</Unit>
+		<Unit filename="C:/Users/User/Desktop/end_copy/main.cpp">
+			<Option target="end_copy"/>
+		</Unit>
+		<Unit filename="C:/Users/User/Desktop/end_copy/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
